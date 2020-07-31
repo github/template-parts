@@ -5,15 +5,19 @@ type Params = Record<string, unknown>
 export type StampedTemplateProcessor = (parts: Iterable<Part>, params: Params) => void
 
 export class Part {
-  constructor(public parentNode: ChildNode | AttributeValuePart, public expression: string) {}
+  constructor(
+    public parentNode: ChildNode,
+    public parentPart: ChildNode | AttributeValuePart,
+    public expression: string
+  ) {}
 
   get attribute(): Attr | null {
-    return this.parentNode instanceof AttributeValuePart ? this.parentNode.parentNode.parentNode : null
+    return this.parentPart instanceof AttributeValuePart ? this.parentPart.parentNode.parentNode : null
   }
 
   replaceWith(node: string | ChildNode): void {
     if (typeof node === 'string') node = new Text(node)
-    this.parentNode = this.parentNode.replaceWith(node) || node
+    this.parentPart = this.parentPart.replaceWith(node) || node
   }
 }
 
@@ -32,10 +36,10 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
               const oldPart = part
               part = part.split(token.end - token.start)
               if (token.type === 'expr') {
-                yield new Part(oldPart, token.value)
+                yield new Part(node, oldPart, token.value)
               }
             } else if (token.type === 'expr') {
-              yield new Part(part, token.value)
+              yield new Part(node, part, token.value)
             }
           }
         }
@@ -43,7 +47,7 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
     } else if (node instanceof Text && node.textContent && node.textContent.includes('{{')) {
       for (const token of parse(node.textContent)) {
         if (token.end < node.textContent.length) node.splitText(token.end)
-        if (token.type === 'expr') yield new Part(node, token.value)
+        if (token.type === 'expr') yield new Part(node, node, token.value)
         break
       }
     }

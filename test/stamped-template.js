@@ -1,5 +1,5 @@
 import {StampedTemplate} from '../lib/stamped-template.js'
-import {propertyIdentity} from '../lib/processors.js'
+import {propertyIdentity, propertyIdentityOrBooleanAttribute} from '../lib/processors.js'
 
 describe('stamped-template', () => {
   it('applies data to templated text nodes', () => {
@@ -85,6 +85,19 @@ describe('stamped-template', () => {
       expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
       instance.update({x: 'bing', y: 'bong', z: 'quux'})
       expect(root.innerHTML).to.equal(`<div class="my-bing-state bong">quux</div>`)
+    })
+
+    it('allows attributes to be toggled on and off', () => {
+      const template = document.createElement('template')
+      template.innerHTML = `<div hidden="{{ hidden }}"></div>`
+      const instance = new StampedTemplate(template, propertyIdentityOrBooleanAttribute, {hidden: true})
+      const root = document.createElement('div')
+      root.appendChild(instance.fragment)
+      expect(root.innerHTML).to.equal(`<div hidden="hidden"></div>`)
+      instance.update({hidden: false})
+      expect(root.innerHTML).to.equal(`<div></div>`)
+      instance.update({hidden: 'hidden'})
+      expect(root.innerHTML).to.equal(`<div hidden="hidden"></div>`)
     })
   })
 })

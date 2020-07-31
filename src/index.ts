@@ -1,5 +1,5 @@
 export {StampedTemplate, Part} from './stamped-template'
 export {parse} from './template-string-parser'
 export {AttributeValuePart, AttributeValue} from './attribute-value'
-export {propertyIdentity} from './processors'
+export {propertyIdentity, propertyIdentityOrBooleanAttribute} from './processors'
 export type {StampedTemplateProcessor} from './stamped-template'
