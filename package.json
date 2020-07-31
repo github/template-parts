@@ -1,7 +1,7 @@
 {
   "name": "@github/template-parts",
   "version": "0.1.0",
-  "description": "A 'ponyfill' for the Template Parts proposal (https://github.com/domenic/template-parts)",
+  "description": "An implementation of the Template Parts proposal (https://github.com/domenic/template-parts)",
   "homepage": "https://github.github.io/template-parts",
   "bugs": {
     "url": "https://github.com/github/template-parts/issues"
@@ -12,9 +12,6 @@
   },
   "license": "MIT",
   "author": "GitHub Inc.",
-  "contributors": [
-    "Keith Cirkel (https://keithcirkel.co.uk/)"
-  ],
   "type": "module",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -43,8 +40,5 @@
     "karma-mocha-reporter": "^2.2.5",
     "mocha": "^8.0.1",
     "typescript": "^3.9.7"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   }
 }
