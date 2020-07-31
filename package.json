@@ -1,0 +1,44 @@
+{
+  "name": "@github/template-parts",
+  "version": "0.1.0",
+  "description": "An implementation of the Template Parts proposal (https://github.com/domenic/template-parts)",
+  "homepage": "https://github.github.io/template-parts",
+  "bugs": {
+    "url": "https://github.com/github/template-parts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/github/template-parts.git"
+  },
+  "license": "MIT",
+  "author": "GitHub Inc.",
+  "type": "module",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "lint": "eslint . --ignore-path .gitignore",
+    "pretest": "npm run build",
+    "test": "npm run lint && karma start test/karma.config.cjs"
+  },
+  "prettier": "@github/prettier-config",
+  "devDependencies": {
+    "@github/prettier-config": "^0.0.4",
+    "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
+    "eslint": "^7.5.0",
+    "eslint-plugin-github": "^4.1.1",
+    "karma": "^5.1.1",
+    "karma-chai": "^0.1.0",
+    "karma-chai-spies": "^0.1.4",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "mocha": "^8.0.1",
+    "typescript": "^3.9.7"
+  }
+}
