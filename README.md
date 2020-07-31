@@ -33,3 +33,12 @@ const tpl = new StampedTemplate(document.getElementById('foo'), (parts, params) 
 ```
 
 A `StampedTemplate` instance has the `fragment: DocumentFragment` property - the cloned contents of the template - and an `update(params: Record<string, unknown>): void` method - which when called will run the given processor again, with the new `params`.
+
+This library also comes with a `propertyIdentity` processor which implements a basic processor that will replace expressions with the corresponding property value in the params object. You can use this as a processor to simplify writing a custom one:
+
+
+```js
+import {StampedTemplate, propertyIdentity} from '@github/template-parts'
+
+const tpl = new StampedTemplate(document.getElementById('foo'), propertyIdentity, { x: 'Hello', y: 'bar'})
+```
