@@ -62,7 +62,7 @@ describe('stamped-template', () => {
     root.appendChild(instance.fragment)
     expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
   })
-  it('it allows spaces inside template part identifiers', () => {
+  it('allows spaces inside template part identifiers', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{         z          }}</div>`
     template.innerHTML = originalHTML
@@ -72,7 +72,16 @@ describe('stamped-template', () => {
     root.appendChild(instance.fragment)
     expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
   })
-
+  it('never writes mustache syntax into an instantiated template even if no state given', () => {
+    const template = document.createElement('template')
+    const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
+    template.innerHTML = originalHTML
+    const instance = new StampedTemplate(template, () => null, {a: 'foo', b: 'bar', c: 'baz'})
+    expect(template.innerHTML).to.equal(originalHTML)
+    const root = document.createElement('div')
+    root.appendChild(instance.fragment)
+    expect(root.innerHTML).to.equal(`<div class="my--state "></div>`)
+  })
   describe('updating', () => {
     it('updates all nodes with new values', () => {
       const template = document.createElement('template')

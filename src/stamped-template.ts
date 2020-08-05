@@ -9,7 +9,13 @@ export class Part {
     public parentNode: ChildNode,
     public parentPart: ChildNode | AttributeValuePart,
     public expression: string
-  ) {}
+  ) {
+    if (this.parentPart instanceof AttributeValuePart) {
+      this.parentPart.value = ''
+    } else {
+      this.parentPart.textContent = ''
+    }
+  }
 
   get attribute(): Attr | null {
     return this.parentPart instanceof AttributeValuePart ? this.parentPart.parentNode.parentNode : null
