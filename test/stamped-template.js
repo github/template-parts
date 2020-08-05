@@ -108,5 +108,18 @@ describe('stamped-template', () => {
       instance.update({hidden: 'hidden'})
       expect(root.innerHTML).to.equal(`<div hidden="hidden"></div>`)
     })
+
+    it('allows the processor to skip updating elements without state', () => {
+      const template = document.createElement('template')
+      template.innerHTML = `<div>{{ a }} {{ b }}</div>`
+      const instance = new StampedTemplate(template, propertyIdentity, {a: 'Hello', b: 'World'})
+      const root = document.createElement('div')
+      root.appendChild(instance.fragment)
+      expect(root.innerHTML).to.equal(`<div>Hello World</div>`)
+      instance.update({a: 'Goodbye'})
+      expect(root.innerHTML).to.equal(`<div>Goodbye World</div>`)
+      instance.update({b: 'Universe'})
+      expect(root.innerHTML).to.equal(`<div>Goodbye Universe</div>`)
+    })
   })
 })
