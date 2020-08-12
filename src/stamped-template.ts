@@ -1,5 +1,5 @@
 import {parse} from './template-string-parser.js'
-import {AttributeValue, AttributeValuePart} from './attribute-value.js'
+import {AttributeValueSetter, AttributeValuePart} from './attribute-value.js'
 
 type Params = Record<string, unknown>
 export type StampedTemplateProcessor = (parts: Iterable<Part>, params: Params) => void
@@ -30,7 +30,7 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
         const value = node.getAttribute(name) || ''
         if (value.includes('{{')) {
           const attr = node.getAttributeNode(name)!
-          let part = new AttributeValue(attr).children[0]
+          let part = new AttributeValueSetter(attr).children[0]
           for (const token of parse(value)) {
             if (token.end < value.length) {
               const oldPart = part

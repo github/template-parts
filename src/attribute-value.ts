@@ -7,7 +7,7 @@ export class AttributeValuePart {
     this.#value = value
     this.parentNode.updateParent()
   }
-  constructor(public parentNode: AttributeValue, value: string) {
+  constructor(public parentNode: AttributeValueSetter, value: string) {
     this.#value = value
   }
   split(offset: number): AttributeValuePart {
@@ -26,7 +26,7 @@ export class AttributeValuePart {
   }
 }
 
-export class AttributeValue {
+export class AttributeValueSetter {
   children: AttributeValuePart[] = []
   get value(): string {
     return this.children.reduce((str, part) => `${str}${part.value}`, '')

@@ -1,5 +1,5 @@
 export {StampedTemplate, Part} from './stamped-template.js'
 export {parse} from './template-string-parser.js'
-export {AttributeValuePart, AttributeValue} from './attribute-value.js'
+export {AttributeValuePart, AttributeValueSetter} from './attribute-value.js'
 export {propertyIdentity, propertyIdentityOrBooleanAttribute} from './processors.js'
 export type {StampedTemplateProcessor} from './stamped-template.js'
