@@ -31,7 +31,7 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
         const value = node.getAttribute(name) || ''
         if (value.includes('{{')) {
           const attr = node.getAttributeNode(name)!
-          let part = new AttributeValueSetter(attr).children[0]
+          let part = new AttributeValueSetter(attr).partList[0]
           for (const token of parse(value)) {
             if (token.end < value.length) {
               const oldPart = part
