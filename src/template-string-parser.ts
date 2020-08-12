@@ -16,13 +16,13 @@ export function* parse(text: string): Iterable<Token> {
   let tokenStart = 0
   let open = false
   for (let i = 0; i < text.length; i += 1) {
-    if (text[i] === '{' && text[i + 1] === '{' && !open) {
+    if (text[i] === '{' && text[i + 1] === '{' && text[i - 1] !== '\\' && !open) {
       open = true
       if (value) yield {type: 'text', start: tokenStart, end: i, value}
       value = '{{'
       tokenStart = i
       i += 2
-    } else if (text[i] === '}' && text[i + 1] === '}' && open) {
+    } else if (text[i] === '}' && text[i + 1] === '}' && text[i - 1] !== '\\' && open) {
       open = false
       yield {type: 'expr', start: tokenStart, end: i + 2, value: value.slice(2)}
       value = ''
