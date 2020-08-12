@@ -1,4 +1,6 @@
-export class NodeTemplatePart {
+import {TemplatePart} from './types.js'
+
+export class NodeTemplatePart implements TemplatePart {
   #parts: ChildNode[]
 
   constructor(node: ChildNode, public expression: string) {
