@@ -1,13 +1,6 @@
 import {AttributeValueSetter, AttributeTemplatePart} from '../lib/attribute-template-part.js'
 
 describe('AttributeValue', () => {
-  it('updates the given attribute when it recieves a new value', () => {
-    const attr = document.createAttribute('class')
-    const instance = new AttributeValueSetter(document.createElement('div'), attr)
-    expect(attr.value).to.equal('')
-    instance.value = 'foo'
-    expect(attr.value).to.equal('foo')
-  })
   it('updates the given attribute from partList when updateParent is called', () => {
     const attr = document.createAttribute('class')
     const instance = new AttributeValueSetter(document.createElement('div'), attr)
