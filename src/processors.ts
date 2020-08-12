@@ -7,10 +7,10 @@ export function propertyIdentity(parts: Iterable<TemplatePart>, params: Record<s
     const key = part.expression
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value: any = key in params ? params[key] : ''
-    if (part instanceof AttributeTemplatePart) {
-      part.replaceWith(value)
-    } else if (part instanceof NodeTemplatePart) {
+    if (part instanceof NodeTemplatePart) {
       part.replace(value)
+    } else {
+      part.value = value
     }
   }
 }
@@ -31,10 +31,10 @@ export function propertyIdentityOrBooleanAttribute(
       } else {
         element.setAttribute(name, value === true ? name : value)
       }
-    } else if (part instanceof AttributeTemplatePart) {
-      part.replaceWith(value)
     } else if (part instanceof NodeTemplatePart) {
       part.replace(value)
+    } else {
+      part.value = value
     }
   }
 }

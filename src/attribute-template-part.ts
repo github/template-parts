@@ -1,4 +1,5 @@
 import {TemplatePart} from './types.js'
+
 export class AttributeTemplatePart implements TemplatePart {
   #setter: AttributeValueSetter
   #value = ''
@@ -15,13 +16,13 @@ export class AttributeTemplatePart implements TemplatePart {
     return this.#setter.attr.namespaceURI
   }
 
-  get value(): string {
+  get value(): string | null {
     return this.#value
   }
 
-  set value(value: string) {
-    this.#value = value
-    this.#setter.updateParent()
+  set value(value: string | null) {
+    this.#value = value || ''
+    this.#setter.updateParent(value)
   }
 
   get element(): Element {
@@ -49,10 +50,13 @@ export class AttributeValueSetter {
   append(part: string | AttributeTemplatePart): void {
     this.partList.push(part)
   }
-  updateParent(): void {
-    this.attr.value = this.partList.reduce((str: string, part) => {
-      str += typeof part === 'string' ? part : part.value
-      return str
-    }, '')
+
+  updateParent(partValue: string | null): void {
+    if (this.partList.length === 1 && partValue === null) {
+      this.element.removeAttributeNS(this.attr.namespaceURI, this.attr.name)
+    } else {
+      const str = this.partList.map(s => (typeof s === 'string' ? s : s.value)).join('')
+      this.element.setAttributeNS(this.attr.namespaceURI, this.attr.name, str)
+    }
   }
 }
