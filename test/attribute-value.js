@@ -27,13 +27,4 @@ describe('AttributeValuePart', () => {
     instance.partList[0].value = 'goodbye'
     expect(attr.value).to.equal('goodbye world')
   })
-  it('appends a new node to the existing AttributeValue when split() is called', () => {
-    const attr = document.createAttribute('class')
-    const instance = new AttributeValueSetter(document.createElement('div'), attr)
-    instance.partList = [new AttributeValuePart(instance, 'hello world')]
-    instance.partList[0].split('5')
-    expect(instance.partList).to.have.lengthOf(2)
-    expect(instance.partList[0]).to.be.an.instanceof(AttributeValuePart).with.property('value', 'hello')
-    expect(instance.partList[1]).to.be.an.instanceof(AttributeValuePart).with.property('value', ' world')
-  })
 })
