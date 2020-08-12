@@ -31,7 +31,7 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
     } else if (node instanceof Text && node.textContent && node.textContent.includes('{{')) {
       for (const token of parse(node.textContent)) {
         if (token.end < node.textContent.length) node.splitText(token.end)
-        if (token.type === 'part') yield new NodeTemplatePart(node, node, token.value)
+        if (token.type === 'part') yield new NodeTemplatePart(node, token.value)
         break
       }
     }
