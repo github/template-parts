@@ -1,5 +1,5 @@
 import type {Part} from './stamped-template.js'
-import {AttributeValueSetter} from './attribute-value.js'
+import {AttributeValueSetter} from './attribute-template-part.js'
 
 export function propertyIdentity(parts: Iterable<Part>, params: Record<string, unknown>): void {
   for (const part of parts) {

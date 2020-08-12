@@ -1,5 +1,5 @@
 import {parse} from './template-string-parser.js'
-import {AttributeValueSetter, AttributeValuePart} from './attribute-value.js'
+import {AttributeValueSetter, AttributeTemplatePart} from './attribute-template-part.js'
 import {propertyIdentity} from './processors.js'
 
 type Params = Record<string, unknown>
@@ -8,12 +8,12 @@ export type StampedTemplateProcessor = (parts: Iterable<Part>, params: Params) =
 export class Part {
   constructor(
     public parentNode: ChildNode,
-    public parentPart: ChildNode | AttributeValuePart,
+    public parentPart: ChildNode | AttributeTemplatePart,
     public expression: string
   ) {}
 
   get attribute(): Attr | null {
-    return this.parentPart instanceof AttributeValuePart ? this.parentPart.parentNode.parentNode : null
+    return this.parentPart instanceof AttributeTemplatePart ? this.parentPart.parentNode.parentNode : null
   }
 
   replaceWith(node: string | ChildNode): void {
@@ -35,7 +35,7 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
             if (token.type === 'string') {
               valueSetter.append(token.value)
             } else {
-              const part = new AttributeValuePart(valueSetter, '')
+              const part = new AttributeTemplatePart(valueSetter, '')
               valueSetter.append(part)
               const templatePart = new Part(node, part, token.value)
               yield templatePart

@@ -1,4 +1,4 @@
-import {AttributeValueSetter, AttributeValuePart} from '../lib/attribute-value.js'
+import {AttributeValueSetter, AttributeTemplatePart} from '../lib/attribute-template-part.js'
 
 describe('AttributeValue', () => {
   it('updates the given attribute when it recieves a new value', () => {
@@ -11,17 +11,17 @@ describe('AttributeValue', () => {
   it('updates the given attribute from partList when updateParent is called', () => {
     const attr = document.createAttribute('class')
     const instance = new AttributeValueSetter(document.createElement('div'), attr)
-    instance.partList = [new AttributeValuePart(instance, 'foo')]
+    instance.partList = [new AttributeTemplatePart(instance, 'foo')]
     instance.updateParent()
     expect(attr.value).to.equal('foo')
   })
 })
 
-describe('AttributeValuePart', () => {
+describe('AttributeTemplatePart', () => {
   it('updates the AttributeValue which updates the Attr whenever it receives a new value', () => {
     const attr = document.createAttribute('class')
     const instance = new AttributeValueSetter(document.createElement('div'), attr)
-    instance.partList = [new AttributeValuePart(instance, 'hello'), new AttributeValuePart(instance, ' world')]
+    instance.partList = [new AttributeTemplatePart(instance, 'hello'), new AttributeTemplatePart(instance, ' world')]
     instance.updateParent()
     expect(attr.value).to.equal('hello world')
     instance.partList[0].value = 'goodbye'

@@ -1,4 +1,4 @@
-export class AttributeValuePart {
+export class AttributeTemplatePart {
   #value = ''
   get value(): string {
     return this.#value
@@ -10,7 +10,7 @@ export class AttributeValuePart {
   constructor(public parentNode: AttributeValueSetter, value: string) {
     this.#value = value
   }
-  replaceWith(value: string | ChildNode): AttributeValuePart {
+  replaceWith(value: string | ChildNode): AttributeTemplatePart {
     if (typeof value === 'string') {
       this.value = value
     } else {
@@ -21,7 +21,7 @@ export class AttributeValuePart {
 }
 
 export class AttributeValueSetter {
-  partList: Array<string | AttributeValuePart> = []
+  partList: Array<string | AttributeTemplatePart> = []
   get value(): string {
     return this.partList.reduce((str: string, part) => {
       str += typeof part === 'string' ? part : part.value
@@ -29,11 +29,11 @@ export class AttributeValueSetter {
     }, '')
   }
   set value(value: string) {
-    this.partList = [new AttributeValuePart(this, value)]
+    this.partList = [new AttributeTemplatePart(this, value)]
     this.updateParent()
   }
   constructor(public element: Element, public parentNode: Attr) {}
-  append(part: string | AttributeValuePart): void {
+  append(part: string | AttributeTemplatePart): void {
     this.partList.push(part)
   }
   updateParent(): void {
