@@ -35,7 +35,7 @@ export class AttributeValueSetter {
     this.partList = [new AttributeValuePart(this, value)]
     this.updateParent()
   }
-  constructor(public parentNode: Attr) {
+  constructor(public element: Element, public parentNode: Attr) {
     this.partList = [new AttributeValuePart(this, this.parentNode.value)]
   }
   updateParent(): void {
