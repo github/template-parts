@@ -24,7 +24,7 @@ export function* parse(text: string): Iterable<Token> {
       i += 2
     } else if (text[i] === '}' && text[i + 1] === '}' && text[i - 1] !== '\\' && open) {
       open = false
-      yield {type: 'expr', start: tokenStart, end: i + 2, value: value.slice(2)}
+      yield {type: 'expr', start: tokenStart, end: i + 2, value: value.slice(2).trim()}
       value = ''
       i += 2
       tokenStart = i

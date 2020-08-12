@@ -21,6 +21,10 @@ describe('template-string-parser', () => {
     expect(Array.from(parse('{{x\\}\\}}}'))).to.eql([{type: 'expr', start: 0, end: 9, value: 'x\\}\\}'}])
   })
 
+  it('strips leading and trailing whitespace', () => {
+    expect(Array.from(parse('{{ x }}'))).to.eql([{type: 'expr', start: 0, end: 7, value: 'x'}])
+  })
+
   it('tokenizes multiple values', () => {
     expect(Array.from(parse('hello {{x}} and {{y}}'))).to.eql([
       {type: 'text', start: 0, end: 6, value: 'hello '},
