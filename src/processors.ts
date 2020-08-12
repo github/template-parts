@@ -1,5 +1,6 @@
-import type {TemplatePart} from './stamped-template.js'
+import type {TemplatePart} from './types.js'
 import {AttributeTemplatePart} from './attribute-template-part.js'
+import {NodeTemplatePart} from './node-template-part.js'
 
 export function propertyIdentity(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
   for (const part of parts) {
@@ -8,7 +9,7 @@ export function propertyIdentity(parts: Iterable<TemplatePart>, params: Record<s
     const value: any = key in params ? params[key] : ''
     if (part instanceof AttributeTemplatePart) {
       part.replaceWith(value)
-    } else {
+    } else if (part instanceof NodeTemplatePart) {
       part.replace(value)
     }
   }
@@ -32,7 +33,7 @@ export function propertyIdentityOrBooleanAttribute(
       }
     } else if (part instanceof AttributeTemplatePart) {
       part.replaceWith(value)
-    } else {
+    } else if (part instanceof NodeTemplatePart) {
       part.replace(value)
     }
   }

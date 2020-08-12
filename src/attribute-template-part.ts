@@ -1,4 +1,5 @@
-export class AttributeTemplatePart {
+import {TemplatePart} from './types.js'
+export class AttributeTemplatePart implements TemplatePart {
   #setter: AttributeValueSetter
   #value = ''
 
