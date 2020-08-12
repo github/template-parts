@@ -30,16 +30,11 @@ export class AttributeTemplatePart implements TemplatePart {
   }
 
   get booleanValue(): boolean {
-    return this.#setter.partList.length === 1
+    return this.#setter.booleanValue
   }
 
-  replaceWith(value: string | ChildNode): AttributeTemplatePart {
-    if (typeof value === 'string') {
-      this.value = value
-    } else {
-      this.value = value.textContent || ''
-    }
-    return this
+  set booleanValue(value: boolean) {
+    this.#setter.booleanValue = value
   }
 }
 
@@ -47,6 +42,18 @@ export class AttributeValueSetter {
   partList: Array<string | AttributeTemplatePart> = []
 
   constructor(public element: Element, public attr: Attr) {}
+
+  get booleanValue(): boolean {
+    return this.element.hasAttributeNS(this.attr.namespaceURI, this.attr.name)
+  }
+
+  set booleanValue(value: boolean) {
+    const firstPart = this.partList[0]
+    if (this.partList.length !== 1 || typeof firstPart == 'string') {
+      throw new DOMException('Operation not supported', 'NotSupportedError')
+    }
+    firstPart.value = value ? '' : null
+  }
 
   append(part: string | AttributeTemplatePart): void {
     this.partList.push(part)
