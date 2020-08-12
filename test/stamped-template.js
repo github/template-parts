@@ -1,12 +1,12 @@
 import {StampedTemplate} from '../lib/stamped-template.js'
-import {propertyIdentity, propertyIdentityOrBooleanAttribute} from '../lib/processors.js'
+import {propertyIdentityOrBooleanAttribute} from '../lib/processors.js'
 
 describe('stamped-template', () => {
   it('applies data to templated text nodes', () => {
     const template = document.createElement('template')
     const originalHTML = `{{x}}`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, propertyIdentity, {x: 'Hello world'})
+    const instance = new StampedTemplate(template, {x: 'Hello world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance.fragment)
@@ -16,7 +16,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `Hello {{x}}!`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, propertyIdentity, {x: 'world'})
+    const instance = new StampedTemplate(template, {x: 'world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance.fragment)
@@ -26,7 +26,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = '<div><div>Hello {{x}}!</div></div>'
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, propertyIdentity, {x: 'world'})
+    const instance = new StampedTemplate(template, {x: 'world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance.fragment)
@@ -36,7 +36,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="{{y}}"></div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, propertyIdentity, {y: 'foo'})
+    const instance = new StampedTemplate(template, {y: 'foo'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance.fragment)
@@ -46,7 +46,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{y}}-state"></div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, propertyIdentity, {y: 'foo'})
+    const instance = new StampedTemplate(template, {y: 'foo'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance.fragment)
@@ -56,7 +56,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{x}}-state {{y}}">{{z}}</div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, propertyIdentity, {x: 'foo', y: 'bar', z: 'baz'})
+    const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance.fragment)
@@ -66,7 +66,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{         z          }}</div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, propertyIdentity, {x: 'foo', y: 'bar', z: 'baz'})
+    const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance.fragment)
@@ -78,7 +78,7 @@ describe('stamped-template', () => {
       const template = document.createElement('template')
       const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
       template.innerHTML = originalHTML
-      const instance = new StampedTemplate(template, propertyIdentity, {x: 'foo', y: 'bar', z: 'baz'})
+      const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
       expect(template.innerHTML).to.equal(originalHTML)
       const root = document.createElement('div')
       root.appendChild(instance.fragment)
@@ -90,7 +90,7 @@ describe('stamped-template', () => {
     it('allows attributes to be toggled on and off', () => {
       const template = document.createElement('template')
       template.innerHTML = `<div hidden="{{ hidden }}"></div>`
-      const instance = new StampedTemplate(template, propertyIdentityOrBooleanAttribute, {hidden: true})
+      const instance = new StampedTemplate(template, {hidden: true}, propertyIdentityOrBooleanAttribute)
       const root = document.createElement('div')
       root.appendChild(instance.fragment)
       expect(root.innerHTML).to.equal(`<div hidden="hidden"></div>`)
