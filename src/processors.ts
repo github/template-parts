@@ -2,7 +2,7 @@ import type {Part} from './stamped-template.js'
 
 export function propertyIdentity(parts: Iterable<Part>, params: Record<string, unknown>): void {
   for (const part of parts) {
-    const key = part.expression.trim()
+    const key = part.expression
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value: any = key in params ? params[key] : ''
     part.replaceWith(value)
@@ -11,7 +11,7 @@ export function propertyIdentity(parts: Iterable<Part>, params: Record<string, u
 
 export function propertyIdentityOrBooleanAttribute(parts: Iterable<Part>, params: Record<string, unknown>): void {
   for (const part of parts) {
-    const key = part.expression.trim()
+    const key = part.expression
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value: any = key in params ? params[key] : ''
     const parent = part.parentNode
