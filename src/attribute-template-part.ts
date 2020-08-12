@@ -7,6 +7,14 @@ export class AttributeTemplatePart implements TemplatePart {
     this.#setter = setter
   }
 
+  get attributeName(): string {
+    return this.#setter.attr.name
+  }
+
+  get attributeNamespace(): string | null {
+    return this.#setter.attr.namespaceURI
+  }
+
   get value(): string {
     return this.#value
   }
@@ -18,10 +26,6 @@ export class AttributeTemplatePart implements TemplatePart {
 
   get element(): Element {
     return this.#setter.element
-  }
-
-  get attributeName(): string {
-    return this.#setter.attr.name
   }
 
   get booleanValue(): boolean {
