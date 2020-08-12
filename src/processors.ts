@@ -22,13 +22,13 @@ export function propertyIdentityOrBooleanAttribute(
     const key = part.expression
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value: any = key in params ? params[key] : ''
-    if (part instanceof AttributeTemplatePart && part.parentNode.partList.length === 1) {
-      const element = part.parentNode.element
-      const attr = part.parentNode.parentNode
+    if (part instanceof AttributeTemplatePart && part.booleanValue) {
+      const element = part.element
+      const name = part.attributeName
       if (value === false) {
-        element.removeAttribute(attr.name)
+        element.removeAttribute(name)
       } else {
-        element.setAttribute(attr.name, value === true ? attr.name : value)
+        element.setAttribute(name, value === true ? name : value)
       }
     } else if (part instanceof AttributeTemplatePart) {
       part.replaceWith(value)

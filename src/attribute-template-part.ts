@@ -1,13 +1,32 @@
 export class AttributeTemplatePart {
+  #setter: AttributeValueSetter
   #value = ''
+
   get value(): string {
     return this.#value
   }
+
   set value(value: string) {
     this.#value = value
-    this.parentNode.updateParent()
+    this.#setter.updateParent()
   }
-  constructor(public parentNode: AttributeValueSetter, public expression: string) {}
+
+  get element(): Element {
+    return this.#setter.element
+  }
+
+  get attributeName(): string {
+    return this.#setter.parentNode.name
+  }
+
+  get booleanValue(): boolean {
+    return this.#setter.partList.length === 1
+  }
+
+  constructor(setter: AttributeValueSetter, public expression: string) {
+    this.#setter = setter
+  }
+
   replaceWith(value: string | ChildNode): AttributeTemplatePart {
     if (typeof value === 'string') {
       this.value = value
