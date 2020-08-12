@@ -17,7 +17,7 @@ export class AttributeTemplatePart implements TemplatePart {
   }
 
   get attributeName(): string {
-    return this.#setter.parentNode.name
+    return this.#setter.attr.name
   }
 
   get booleanValue(): boolean {
@@ -51,11 +51,11 @@ export class AttributeValueSetter {
     this.partList = [part]
     part.value = value
   }
-  constructor(public element: Element, public parentNode: Attr) {}
+  constructor(public element: Element, public attr: Attr) {}
   append(part: string | AttributeTemplatePart): void {
     this.partList.push(part)
   }
   updateParent(): void {
-    this.parentNode.value = this.value
+    this.attr.value = this.value
   }
 }
