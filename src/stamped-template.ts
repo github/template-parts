@@ -27,13 +27,12 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
   let node
   while ((node = walker.nextNode())) {
     if (node instanceof Element && node.hasAttributes()) {
-      for (const name of node.getAttributeNames()) {
-        const value = node.getAttribute(name) || ''
-        if (value.includes('{{')) {
-          const attr = node.getAttributeNode(name)!
+      for (let i = 0; i < node.attributes.length; i += 1) {
+        const attr = node.attributes.item(i)
+        if (attr && attr.value.includes('{{')) {
           let part = new AttributeValueSetter(attr).children[0]
-          for (const token of parse(value)) {
-            if (token.end < value.length) {
+          for (const token of parse(attr.value)) {
+            if (token.end < attr.value.length) {
               const oldPart = part
               part = part.split(token.end - token.start)
               if (token.type === 'part') {
