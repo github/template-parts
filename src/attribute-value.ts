@@ -27,16 +27,20 @@ export class AttributeValuePart {
 }
 
 export class AttributeValueSetter {
-  partList: AttributeValuePart[] = []
+  partList: Array<string | AttributeValuePart> = []
   get value(): string {
-    return this.partList.reduce((str, part) => `${str}${part.value}`, '')
+    return this.partList.reduce((str: string, part) => {
+      str += typeof part === 'string' ? part : part.value
+      return str
+    }, '')
   }
   set value(value: string) {
     this.partList = [new AttributeValuePart(this, value)]
     this.updateParent()
   }
-  constructor(public element: Element, public parentNode: Attr) {
-    this.partList = [new AttributeValuePart(this, this.parentNode.value)]
+  constructor(public element: Element, public parentNode: Attr) {}
+  append(part: string | AttributeValuePart): void {
+    this.partList.push(part)
   }
   updateParent(): void {
     this.parentNode.value = this.value
