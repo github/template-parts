@@ -3,6 +3,10 @@ export class AttributeTemplatePart implements TemplatePart {
   #setter: AttributeValueSetter
   #value = ''
 
+  constructor(setter: AttributeValueSetter, public expression: string) {
+    this.#setter = setter
+  }
+
   get value(): string {
     return this.#value
   }
@@ -22,10 +26,6 @@ export class AttributeTemplatePart implements TemplatePart {
 
   get booleanValue(): boolean {
     return this.#setter.partList.length === 1
-  }
-
-  constructor(setter: AttributeValueSetter, public expression: string) {
-    this.#setter = setter
   }
 
   replaceWith(value: string | ChildNode): AttributeTemplatePart {
