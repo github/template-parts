@@ -47,6 +47,7 @@ export class AttributeValueSetter {
   partList: Array<string | AttributeTemplatePart> = []
 
   constructor(public element: Element, public attr: Attr) {}
+
   append(part: string | AttributeTemplatePart): void {
     this.partList.push(part)
   }
