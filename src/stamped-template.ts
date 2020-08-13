@@ -54,17 +54,18 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
   }
 }
 
-export class StampedTemplate {
-  fragment: DocumentFragment
+export class StampedTemplate extends DocumentFragment {
   #processor: StampedTemplateProcessor
   #parts: Iterable<Part>
 
   constructor(template: HTMLTemplateElement, processor: StampedTemplateProcessor, params: Params) {
-    this.fragment = template.content.cloneNode(true) as DocumentFragment
+    super()
+    this.appendChild(template.content.cloneNode(true))
+    this.#parts = Array.from(collectParts(this))
     this.#processor = processor
-    this.#parts = Array.from(collectParts(this.fragment))
     this.update(params)
   }
+
   update(params: Record<string, unknown>): void {
     this.#processor(this.#parts, params)
   }
