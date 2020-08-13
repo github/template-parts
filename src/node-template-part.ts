@@ -29,8 +29,7 @@ export class NodeTemplatePart implements TemplatePart {
       if (typeof node === 'string') return new Text(node)
       return node
     })
-    const node = this.#parts.shift()!
-    node.replaceWith(...parts)
+    this.#parts[0].before(...parts)
     for (const part of this.#parts) part.remove()
     this.#parts = parts
   }
