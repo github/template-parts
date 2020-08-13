@@ -12,8 +12,7 @@ export function propertyIdentityOrBooleanAttribute(
   params: Record<string, unknown>
 ): void {
   for (const part of parts) {
-    const key = part.expression
-    const value: any = params[key] ?? ''
+    const value: any = params[part.expression] ?? ''
     if (part instanceof AttributeTemplatePart && part.booleanValue) {
       const element = part.element
       const name = part.attributeName
