@@ -12,7 +12,7 @@ export function propertyIdentityOrBooleanAttribute(
   params: Record<string, unknown>
 ): void {
   for (const part of parts) {
-    const value: any = params[part.expression] ?? ''
+    const value: unknown = params[part.expression] ?? ''
     if (typeof value === 'boolean' && part instanceof AttributeTemplatePart && part.booleanValue) {
       if (value === false) {
         part.booleanValue = false
@@ -20,7 +20,7 @@ export function propertyIdentityOrBooleanAttribute(
         part.value = part.attributeName
       }
     } else {
-      part.value = value
+      part.value = String(value)
     }
   }
 }
