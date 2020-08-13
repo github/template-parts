@@ -1,7 +1,7 @@
 import {parse} from '../lib/template-string-parser.js'
 
 describe('template-string-parser', () => {
-  it('extracts `{{}}` surrounding parts as expr tokens', () => {
+  it('extracts `{{}}` surrounding parts as part tokens', () => {
     expect(Array.from(parse('{{x}}'))).to.eql([{type: 'part', start: 0, end: 5, value: 'x'}])
   })
 
@@ -10,6 +10,19 @@ describe('template-string-parser', () => {
       {type: 'string', start: 0, end: 6, value: 'hello '},
       {type: 'part', start: 6, end: 11, value: 'x'}
     ])
+  })
+
+  it('does not turn escaped `{{`s into expression tokens', () => {
+    expect(Array.from(parse('\\{{x}}'))).to.eql([{type: 'string', start: 0, end: 6, value: '\\{{x}}'}])
+  })
+
+  it('does not terminate expressions with escaped `}}`s', () => {
+    expect(Array.from(parse('{{x\\}}}'))).to.eql([{type: 'part', start: 0, end: 7, value: 'x\\}'}])
+    expect(Array.from(parse('{{x\\}\\}}}'))).to.eql([{type: 'part', start: 0, end: 9, value: 'x\\}\\}'}])
+  })
+
+  it('strips leading and trailing whitespace', () => {
+    expect(Array.from(parse('{{ x }}'))).to.eql([{type: 'part', start: 0, end: 7, value: 'x'}])
   })
 
   it('tokenizes multiple values', () => {
