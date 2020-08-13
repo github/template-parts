@@ -1,16 +1,16 @@
-interface TextToken {
-  type: 'text'
+interface StringToken {
+  type: 'string'
   start: number
   end: number
   value: string
 }
-interface ExprToken {
-  type: 'expr'
+interface PartToken {
+  type: 'part'
   start: number
   end: number
   value: string
 }
-export type Token = TextToken | ExprToken
+export type Token = StringToken | PartToken
 export function* parse(text: string): Iterable<Token> {
   let value = ''
   let tokenStart = 0
@@ -18,18 +18,18 @@ export function* parse(text: string): Iterable<Token> {
   for (let i = 0; i < text.length; i += 1) {
     if (text[i] === '{' && text[i + 1] === '{' && text[i - 1] !== '\\' && !open) {
       open = true
-      if (value) yield {type: 'text', start: tokenStart, end: i, value}
+      if (value) yield {type: 'string', start: tokenStart, end: i, value}
       value = '{{'
       tokenStart = i
       i += 2
     } else if (text[i] === '}' && text[i + 1] === '}' && text[i - 1] !== '\\' && open) {
       open = false
-      yield {type: 'expr', start: tokenStart, end: i + 2, value: value.slice(2).trim()}
+      yield {type: 'part', start: tokenStart, end: i + 2, value: value.slice(2)}
       value = ''
       i += 2
       tokenStart = i
     }
     value += text[i] || ''
   }
-  if (value) yield {type: 'text', start: tokenStart, end: text.length, value}
+  if (value) yield {type: 'string', start: tokenStart, end: text.length, value}
 }

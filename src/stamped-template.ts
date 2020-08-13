@@ -35,10 +35,10 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
             if (token.end < value.length) {
               const oldPart = part
               part = part.split(token.end - token.start)
-              if (token.type === 'expr') {
+              if (token.type === 'part') {
                 yield new Part(node, oldPart, token.value)
               }
-            } else if (token.type === 'expr') {
+            } else if (token.type === 'part') {
               yield new Part(node, part, token.value)
             }
           }
@@ -47,7 +47,7 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
     } else if (node instanceof Text && node.textContent && node.textContent.includes('{{')) {
       for (const token of parse(node.textContent)) {
         if (token.end < node.textContent.length) node.splitText(token.end)
-        if (token.type === 'expr') yield new Part(node, node, token.value)
+        if (token.type === 'part') yield new Part(node, node, token.value)
         break
       }
     }
