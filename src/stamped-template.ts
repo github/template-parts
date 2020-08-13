@@ -3,7 +3,9 @@ import {AttributeValueSetter, AttributeTemplatePart} from './attribute-template-
 import {propertyIdentity} from './processors.js'
 
 type Params = Record<string, unknown>
-export type StampedTemplateProcessor = (parts: Iterable<Part>, params: Params) => void
+export type StampedTemplateProcessor = (parts: Iterable<TemplatePart>, params: Params) => void
+
+export type TemplatePart = Part | AttributeTemplatePart
 
 export class Part {
   constructor(
@@ -22,7 +24,7 @@ export class Part {
   }
 }
 
-function* collectParts(el: DocumentFragment): Generator<Part> {
+function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   const walker = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null, false)
   let node
   while ((node = walker.nextNode())) {
@@ -35,10 +37,9 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
             if (token.type === 'string') {
               valueSetter.append(token.value)
             } else {
-              const part = new AttributeTemplatePart(valueSetter, '')
+              const part = new AttributeTemplatePart(valueSetter, '', token.value)
               valueSetter.append(part)
-              const templatePart = new Part(node, part, token.value)
-              yield templatePart
+              yield part
             }
           }
         }
@@ -55,7 +56,7 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
 
 export class StampedTemplate extends DocumentFragment {
   #processor: StampedTemplateProcessor
-  #parts: Iterable<Part>
+  #parts: Iterable<TemplatePart>
 
   constructor(template: HTMLTemplateElement, params: Params, processor: StampedTemplateProcessor = propertyIdentity) {
     super()
