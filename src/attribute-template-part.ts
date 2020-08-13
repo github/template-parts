@@ -49,11 +49,10 @@ export class AttributeValueSetter {
   }
 
   set booleanValue(value: boolean) {
-    const firstPart = this.partList[0]
-    if (this.partList.length !== 1 || typeof firstPart == 'string') {
+    if (this.partList.length !== 1) {
       throw new DOMException('Operation not supported', 'NotSupportedError')
     }
-    firstPart.value = value ? '' : null
+    ;(this.partList[0] as AttributeTemplatePart).value = value ? '' : null
   }
 
   append(part: string | AttributeTemplatePart): void {
