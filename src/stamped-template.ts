@@ -26,7 +26,7 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
   const walker = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null, false)
   let node
   while ((node = walker.nextNode())) {
-    if (node instanceof Element) {
+    if (node instanceof Element && node.hasAttributes()) {
       for (const name of node.getAttributeNames()) {
         const value = node.getAttribute(name) || ''
         if (value.includes('{{')) {
