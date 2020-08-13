@@ -21,7 +21,7 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
             if (token.type === 'string') {
               valueSetter.append(token.value)
             } else {
-              const part = new AttributeTemplatePart(valueSetter, '', token.value)
+              const part = new AttributeTemplatePart(valueSetter, token.value)
               valueSetter.append(part)
               yield part
             }
