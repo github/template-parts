@@ -1,5 +1,6 @@
 import {parse} from './template-string-parser.js'
 import {AttributeValue, AttributeValuePart} from './attribute-value.js'
+import {propertyIdentity} from './processors.js'
 
 type Params = Record<string, unknown>
 export type StampedTemplateProcessor = (parts: Iterable<Part>, params: Params) => void
@@ -58,7 +59,7 @@ export class StampedTemplate extends DocumentFragment {
   #processor: StampedTemplateProcessor
   #parts: Iterable<Part>
 
-  constructor(template: HTMLTemplateElement, processor: StampedTemplateProcessor, params: Params) {
+  constructor(template: HTMLTemplateElement, params: Params, processor: StampedTemplateProcessor = propertyIdentity) {
     super()
     this.appendChild(template.content.cloneNode(true))
     this.#parts = Array.from(collectParts(this))
