@@ -5,6 +5,7 @@ export class NodeTemplatePart implements TemplatePart {
 
   constructor(node: ChildNode, public expression: string) {
     this.#parts = [node]
+    node.textContent = ''
   }
 
   get value(): string {

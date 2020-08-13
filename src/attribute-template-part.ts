@@ -6,6 +6,7 @@ export class AttributeTemplatePart implements TemplatePart {
 
   constructor(setter: AttributeValueSetter, public expression: string) {
     this.#setter = setter
+    this.#setter.updateParent('')
   }
 
   get attributeName(): string {
