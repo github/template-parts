@@ -13,8 +13,7 @@ export function propertyIdentityOrBooleanAttribute(
 ): void {
   for (const part of parts) {
     const key = part.expression
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const value: any = key in params ? params[key] : ''
+    const value: any = params[key] ?? ''
     if (part instanceof AttributeTemplatePart && part.booleanValue) {
       const element = part.element
       const name = part.attributeName
