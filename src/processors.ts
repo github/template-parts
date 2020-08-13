@@ -17,7 +17,7 @@ export function propertyIdentityOrBooleanAttribute(
       if (part.booleanValue && value === false) {
         part.booleanValue = false
       } else {
-        part.value = part.attributeName
+        part.value = ''
       }
     } else {
       part.value = String(value)
