@@ -72,6 +72,16 @@ describe('stamped-template', () => {
     root.appendChild(instance)
     expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
   })
+  it('never writes mustache syntax into an instantiated template even if no state given', () => {
+    const template = document.createElement('template')
+    const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
+    template.innerHTML = originalHTML
+    const instance = new StampedTemplate(template, {a: 'foo', b: 'bar', c: 'baz'}, () => null)
+    expect(template.innerHTML).to.equal(originalHTML)
+    const root = document.createElement('div')
+    root.appendChild(instance)
+    expect(root.innerHTML).to.equal(`<div class="my--state "></div>`)
+  })
 
   describe('updating', () => {
     it('updates all nodes with new values', () => {

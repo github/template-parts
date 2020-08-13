@@ -1,34 +1,40 @@
-import type {Part} from './stamped-template.js'
-import {AttributeValueSetter} from './attribute-value.js'
+import type {TemplatePart} from './types.js'
+import {AttributeTemplatePart} from './attribute-template-part.js'
+import {NodeTemplatePart} from './node-template-part.js'
 
-export function propertyIdentity(parts: Iterable<Part>, params: Record<string, unknown>): void {
+export function propertyIdentity(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
   for (const part of parts) {
     const key = part.expression
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value: any = key in params ? params[key] : ''
-    part.replaceWith(value)
+    if (part instanceof NodeTemplatePart) {
+      part.replace(value)
+    } else {
+      part.value = value
+    }
   }
 }
 
-export function propertyIdentityOrBooleanAttribute(parts: Iterable<Part>, params: Record<string, unknown>): void {
+export function propertyIdentityOrBooleanAttribute(
+  parts: Iterable<TemplatePart>,
+  params: Record<string, unknown>
+): void {
   for (const part of parts) {
     const key = part.expression
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value: any = key in params ? params[key] : ''
-    const parent = part.parentNode
-    const attributeParentPart = part.parentPart.parentNode
-    if (
-      parent instanceof Element &&
-      attributeParentPart instanceof AttributeValueSetter &&
-      attributeParentPart?.partList.length === 1
-    ) {
+    if (part instanceof AttributeTemplatePart && part.booleanValue) {
+      const element = part.element
+      const name = part.attributeName
       if (value === false) {
-        parent.removeAttribute(part.attribute!.name)
+        element.removeAttribute(name)
       } else {
-        parent.setAttribute(part.attribute!.name, value === true ? part.attribute!.name : value)
+        element.setAttribute(name, value === true ? name : value)
       }
+    } else if (part instanceof NodeTemplatePart) {
+      part.replace(value)
     } else {
-      part.replaceWith(value)
+      part.value = value
     }
   }
 }
