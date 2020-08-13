@@ -7,11 +7,7 @@ export function propertyIdentity(parts: Iterable<TemplatePart>, params: Record<s
     const key = part.expression
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value: any = key in params ? params[key] : ''
-    if (part instanceof NodeTemplatePart) {
-      part.value = value
-    } else {
-      part.value = value
-    }
+    part.value = value
   }
 }
 
