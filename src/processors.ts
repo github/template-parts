@@ -14,11 +14,7 @@ export function propertyIdentityOrBooleanAttribute(
   for (const part of parts) {
     const value: unknown = params[part.expression] ?? ''
     if (typeof value === 'boolean' && part instanceof AttributeTemplatePart) {
-      if (part.booleanValue && value === false) {
-        part.booleanValue = false
-      } else {
-        part.value = ''
-      }
+        part.booleanValue = value
     } else {
       part.value = String(value)
     }
