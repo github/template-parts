@@ -13,7 +13,7 @@ export class AttributeValuePart {
   split(offset: number): AttributeValuePart {
     const node = new AttributeValuePart(this.parentNode, this.#value.slice(offset))
     this.#value = this.#value.slice(0, offset)
-    this.parentNode.children.push(node)
+    this.parentNode.partList.push(node)
     return node
   }
   replaceWith(value: string | ChildNode): AttributeValuePart {
@@ -27,16 +27,16 @@ export class AttributeValuePart {
 }
 
 export class AttributeValueSetter {
-  children: AttributeValuePart[] = []
+  partList: AttributeValuePart[] = []
   get value(): string {
-    return this.children.reduce((str, part) => `${str}${part.value}`, '')
+    return this.partList.reduce((str, part) => `${str}${part.value}`, '')
   }
   set value(value: string) {
-    this.children = [new AttributeValuePart(this, value)]
+    this.partList = [new AttributeValuePart(this, value)]
     this.updateParent()
   }
   constructor(public parentNode: Attr) {
-    this.children = [new AttributeValuePart(this, this.parentNode.value)]
+    this.partList = [new AttributeValuePart(this, this.parentNode.value)]
   }
   updateParent(): void {
     this.parentNode.value = this.value
