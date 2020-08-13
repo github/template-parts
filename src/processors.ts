@@ -5,9 +5,7 @@ import {NodeTemplatePart} from './node-template-part.js'
 export function propertyIdentity(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
   for (const part of parts) {
     const key = part.expression
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const value: any = key in params ? params[key] : ''
-    part.value = value
+    part.value = String(params[key] ?? '')
   }
 }
 
