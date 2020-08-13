@@ -36,7 +36,7 @@
       event.preventDefault()
       const timestamp = new Date().toLocaleTimeString()
       const username = usernameField.value
-      list.append(new StampedTemplate(template, propertyIdentity, {timestamp, username}).fragment)
+      list.append(new StampedTemplate(template, propertyIdentity, {timestamp, username}))
       usernameField.value = ''
     })
   </script>

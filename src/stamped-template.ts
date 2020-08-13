@@ -36,10 +36,10 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
             if (token.end < value.length) {
               const oldPart = part
               part = part.split(token.end - token.start)
-              if (token.type === 'expr') {
+              if (token.type === 'part') {
                 yield new Part(node, oldPart, token.value)
               }
-            } else if (token.type === 'expr') {
+            } else if (token.type === 'part') {
               yield new Part(node, part, token.value)
             }
           }
@@ -48,24 +48,25 @@ function* collectParts(el: DocumentFragment): Generator<Part> {
     } else if (node instanceof Text && node.textContent && node.textContent.includes('{{')) {
       for (const token of parse(node.textContent)) {
         if (token.end < node.textContent.length) node.splitText(token.end)
-        if (token.type === 'expr') yield new Part(node, node, token.value)
+        if (token.type === 'part') yield new Part(node, node, token.value)
         break
       }
     }
   }
 }
 
-export class StampedTemplate {
-  fragment: DocumentFragment
+export class StampedTemplate extends DocumentFragment {
   #processor: StampedTemplateProcessor
   #parts: Iterable<Part>
 
   constructor(template: HTMLTemplateElement, params: Params, processor: StampedTemplateProcessor = propertyIdentity) {
-    this.fragment = template.content.cloneNode(true) as DocumentFragment
+    super()
+    this.appendChild(template.content.cloneNode(true))
+    this.#parts = Array.from(collectParts(this))
     this.#processor = processor
-    this.#parts = Array.from(collectParts(this.fragment))
     this.update(params)
   }
+
   update(params: Record<string, unknown>): void {
     this.#processor(this.#parts, params)
   }

@@ -9,7 +9,7 @@ describe('stamped-template', () => {
     const instance = new StampedTemplate(template, {x: 'Hello world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
-    root.appendChild(instance.fragment)
+    root.appendChild(instance)
     expect(root.innerHTML).to.equal(`Hello world`)
   })
   it('can render into partial text nodes', () => {
@@ -19,7 +19,7 @@ describe('stamped-template', () => {
     const instance = new StampedTemplate(template, {x: 'world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
-    root.appendChild(instance.fragment)
+    root.appendChild(instance)
     expect(root.innerHTML).to.equal(`Hello world!`)
   })
   it('can render nested text nodes', () => {
@@ -29,7 +29,7 @@ describe('stamped-template', () => {
     const instance = new StampedTemplate(template, {x: 'world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
-    root.appendChild(instance.fragment)
+    root.appendChild(instance)
     expect(root.innerHTML).to.equal(`<div><div>Hello world!</div></div>`)
   })
   it('applies data to templated attributes', () => {
@@ -39,7 +39,7 @@ describe('stamped-template', () => {
     const instance = new StampedTemplate(template, {y: 'foo'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
-    root.appendChild(instance.fragment)
+    root.appendChild(instance)
     expect(root.innerHTML).to.equal(`<div class="foo"></div>`)
   })
   it('can render into partial attribute nodes', () => {
@@ -49,7 +49,7 @@ describe('stamped-template', () => {
     const instance = new StampedTemplate(template, {y: 'foo'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
-    root.appendChild(instance.fragment)
+    root.appendChild(instance)
     expect(root.innerHTML).to.equal(`<div class="my-foo-state"></div>`)
   })
   it('can render into many values', () => {
@@ -59,7 +59,7 @@ describe('stamped-template', () => {
     const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
-    root.appendChild(instance.fragment)
+    root.appendChild(instance)
     expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
   })
   it('it allows spaces inside template part identifiers', () => {
@@ -69,7 +69,7 @@ describe('stamped-template', () => {
     const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
-    root.appendChild(instance.fragment)
+    root.appendChild(instance)
     expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
   })
 
@@ -81,7 +81,7 @@ describe('stamped-template', () => {
       const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
       expect(template.innerHTML).to.equal(originalHTML)
       const root = document.createElement('div')
-      root.appendChild(instance.fragment)
+      root.appendChild(instance)
       expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
       instance.update({x: 'bing', y: 'bong', z: 'quux'})
       expect(root.innerHTML).to.equal(`<div class="my-bing-state bong">quux</div>`)
@@ -92,7 +92,7 @@ describe('stamped-template', () => {
       template.innerHTML = `<div hidden="{{ hidden }}"></div>`
       const instance = new StampedTemplate(template, {hidden: true}, propertyIdentityOrBooleanAttribute)
       const root = document.createElement('div')
-      root.appendChild(instance.fragment)
+      root.appendChild(instance)
       expect(root.innerHTML).to.equal(`<div hidden="hidden"></div>`)
       instance.update({hidden: false})
       expect(root.innerHTML).to.equal(`<div></div>`)
