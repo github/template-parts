@@ -4,8 +4,7 @@ import {NodeTemplatePart} from './node-template-part.js'
 
 export function propertyIdentity(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
   for (const part of parts) {
-    const key = part.expression
-    part.value = String(params[key] ?? '')
+    part.value = String(params[part.expression] ?? '')
   }
 }
 
