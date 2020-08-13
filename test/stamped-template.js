@@ -109,5 +109,18 @@ describe('stamped-template', () => {
       instance.update({hidden: 'hidden'})
       expect(root.innerHTML).to.equal(`<div hidden="hidden"></div>`)
     })
+
+    it('allows attributes to be toggled on even when starting off', () => {
+      const template = document.createElement('template')
+      template.innerHTML = `<div hidden="{{ hidden }}"></div>`
+      const instance = new StampedTemplate(template, {hidden: false}, propertyIdentityOrBooleanAttribute)
+      const root = document.createElement('div')
+      root.appendChild(instance)
+      expect(root.innerHTML).to.equal(`<div></div>`)
+      instance.update({hidden: true})
+      expect(root.innerHTML).to.equal(`<div hidden="hidden"></div>`)
+      instance.update({hidden: false})
+      expect(root.innerHTML).to.equal(`<div></div>`)
+    })
   })
 })
