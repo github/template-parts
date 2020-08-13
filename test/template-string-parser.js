@@ -22,7 +22,6 @@ describe('template-string-parser', () => {
   })
 
   it('strips leading and trailing whitespace', () => {
-    console.log(Array.from(parse('{{ x }}')))
     expect(Array.from(parse('{{ x }}'))).to.eql([{type: 'part', start: 0, end: 7, value: 'x'}])
   })
 
