@@ -1,6 +1,5 @@
 import type {TemplatePart} from './types.js'
 import {AttributeTemplatePart} from './attribute-template-part.js'
-import {NodeTemplatePart} from './node-template-part.js'
 
 export function propertyIdentity(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
   for (const part of parts) {
@@ -24,8 +23,6 @@ export function propertyIdentityOrBooleanAttribute(
       } else {
         element.setAttribute(name, value === true ? name : value)
       }
-    } else if (part instanceof NodeTemplatePart) {
-      part.replace(value)
     } else {
       part.value = value
     }
