@@ -13,7 +13,7 @@ export function propertyIdentityOrBooleanAttribute(
 ): void {
   for (const part of parts) {
     const value: any = params[part.expression] ?? ''
-    if (part instanceof AttributeTemplatePart && part.booleanValue) {
+    if (typeof value === 'boolean' && part instanceof AttributeTemplatePart && part.booleanValue) {
       const element = part.element
       const name = part.attributeName
       if (value === false) {
