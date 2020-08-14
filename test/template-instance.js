@@ -1,7 +1,7 @@
 import {TemplateInstance} from '../lib/template-instance.js'
 import {propertyIdentityOrBooleanAttribute} from '../lib/processors.js'
 
-describe('stamped-template', () => {
+describe('template-instance', () => {
   it('applies data to templated text nodes', () => {
     const template = document.createElement('template')
     const originalHTML = `{{x}}`
