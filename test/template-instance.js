@@ -96,6 +96,19 @@ describe('stamped-template', () => {
       instance.update({x: 'bing', y: 'bong', z: 'quux'})
       expect(root.innerHTML).to.equal(`<div class="my-bing-state bong">quux</div>`)
     })
+
+    it('is a noop when update() is called with no args', () => {
+      const template = document.createElement('template')
+      const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
+      template.innerHTML = originalHTML
+      const instance = new TemplateInstance(template, {x: 'foo', y: 'bar', z: 'baz'})
+      expect(template.innerHTML).to.equal(originalHTML)
+      const root = document.createElement('div')
+      root.appendChild(instance)
+      expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
+      instance.update()
+      expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
+    })
   })
   describe('updating with propertyIdentityOrBooleanAttribute', () => {
     it('allows attributes to be toggled on and off', () => {
@@ -134,6 +147,17 @@ describe('stamped-template', () => {
       instance.update({a: true})
       expect(root.innerHTML).to.equal(`<input aria-disabled="true" value="true" required="" hidden="">`)
       instance.update({a: false})
+      expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
+    })
+
+    it('is a noop when `update()` is called with no args', () => {
+      const template = document.createElement('template')
+      template.innerHTML = `<input required="{{a}}" aria-disabled="{{a}}" hidden="{{a}}" value="{{a}}"/>`
+      const instance = new TemplateInstance(template, {a: false}, propertyIdentityOrBooleanAttribute)
+      const root = document.createElement('div')
+      root.appendChild(instance)
+      expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
+      instance.update()
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
     })
   })
