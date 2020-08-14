@@ -1,8 +1,13 @@
+import type {TemplateInstance} from './template-instance.js'
+
 export interface TemplatePart {
   expression: string
   value: string | null
 }
 
-export type StampedTemplateProcessor = (parts: Iterable<TemplatePart>, params: Params) => void
+type TemplateProcessCallback = (instance: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown) => void
 
-export type Params = Record<string, unknown>
+export type TemplateTypeInit = {
+  processCallback: TemplateProcessCallback
+  createCallback?: TemplateProcessCallback
+}

@@ -2,7 +2,7 @@ import {parse} from './template-string-parser.js'
 import {AttributeValueSetter, AttributeTemplatePart} from './attribute-template-part.js'
 import {NodeTemplatePart} from './node-template-part.js'
 import {propertyIdentity} from './processors.js'
-import {TemplatePart, StampedTemplateProcessor, Params} from './types.js'
+import {TemplatePart, TemplateTypeInit} from './types.js'
 
 function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   const walker = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null, false)
@@ -34,19 +34,19 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   }
 }
 
-export class StampedTemplate extends DocumentFragment {
-  #processor: StampedTemplateProcessor
+export class TemplateInstance extends DocumentFragment {
+  #processor: TemplateTypeInit
   #parts: Iterable<TemplatePart>
 
-  constructor(template: HTMLTemplateElement, params: Params, processor: StampedTemplateProcessor = propertyIdentity) {
+  constructor(template: HTMLTemplateElement, params: unknown, processor: TemplateTypeInit = propertyIdentity) {
     super()
     this.appendChild(template.content.cloneNode(true))
     this.#parts = Array.from(collectParts(this))
     this.#processor = processor
-    this.update(params)
+    this.#processor.createCallback?.(this, this.#parts, params)
   }
 
   update(params: Record<string, unknown>): void {
-    this.#processor(this.#parts, params)
+    this.#processor.processCallback(this, this.#parts, params)
   }
 }
