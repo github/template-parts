@@ -5,9 +5,7 @@ export interface TemplatePart {
   value: string | null
 }
 
-type TemplateProcessCallback = (instance: TemplateInstance, parts: Iterable<TemplatePart>, params: Params) => void
-
-export type Params = Record<string, unknown>
+type TemplateProcessCallback = (instance: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown) => void
 
 export type TemplateTypeInit = {
   processCallback: TemplateProcessCallback
