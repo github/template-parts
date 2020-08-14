@@ -43,10 +43,10 @@ export class TemplateInstance extends DocumentFragment {
     this.appendChild(template.content.cloneNode(true))
     this.#parts = Array.from(collectParts(this))
     this.#processor = processor
-    this.update(params)
+    this.#processor.createCallback?.(this.#parts, params)
   }
 
   update(params: Record<string, unknown>): void {
-    this.#processor(this.#parts, params)
+    this.#processor.processCallback(this.#parts, params)
   }
 }
