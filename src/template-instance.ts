@@ -34,8 +34,8 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   }
 }
 
-export class StampedTemplate extends DocumentFragment {
-  #processor: StampedTemplateProcessor
+export class TemplateInstance extends DocumentFragment {
+  #processor: TemplateTypeInit
   #parts: Iterable<TemplatePart>
 
   constructor(template: HTMLTemplateElement, params: Params, processor: StampedTemplateProcessor = propertyIdentity) {

@@ -1,4 +1,4 @@
-import {StampedTemplate} from '../lib/stamped-template.js'
+import {TemplateInstance} from '../lib/template-instance.js'
 import {propertyIdentityOrBooleanAttribute} from '../lib/processors.js'
 
 describe('stamped-template', () => {
@@ -6,7 +6,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `{{x}}`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, {x: 'Hello world'})
+    const instance = new TemplateInstance(template, {x: 'Hello world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -16,7 +16,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `Hello {{x}}!`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, {x: 'world'})
+    const instance = new TemplateInstance(template, {x: 'world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -26,7 +26,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = '<div><div>Hello {{x}}!</div></div>'
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, {x: 'world'})
+    const instance = new TemplateInstance(template, {x: 'world'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -36,7 +36,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="{{y}}"></div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, {y: 'foo'})
+    const instance = new TemplateInstance(template, {y: 'foo'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -46,7 +46,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{y}}-state"></div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, {y: 'foo'})
+    const instance = new TemplateInstance(template, {y: 'foo'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -56,7 +56,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{x}}-state {{y}}">{{z}}</div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
+    const instance = new TemplateInstance(template, {x: 'foo', y: 'bar', z: 'baz'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -66,7 +66,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{         z          }}</div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
+    const instance = new TemplateInstance(template, {x: 'foo', y: 'bar', z: 'baz'})
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -76,7 +76,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
     template.innerHTML = originalHTML
-    const instance = new StampedTemplate(template, {a: 'foo', b: 'bar', c: 'baz'}, () => null)
+    const instance = new TemplateInstance(template, {a: 'foo', b: 'bar', c: 'baz'}, () => null)
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -88,7 +88,7 @@ describe('stamped-template', () => {
       const template = document.createElement('template')
       const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
       template.innerHTML = originalHTML
-      const instance = new StampedTemplate(template, {x: 'foo', y: 'bar', z: 'baz'})
+      const instance = new TemplateInstance(template, {x: 'foo', y: 'bar', z: 'baz'})
       expect(template.innerHTML).to.equal(originalHTML)
       const root = document.createElement('div')
       root.appendChild(instance)
@@ -101,7 +101,7 @@ describe('stamped-template', () => {
     it('allows attributes to be toggled on and off', () => {
       const template = document.createElement('template')
       template.innerHTML = `<div hidden="{{ hidden }}"></div>`
-      const instance = new StampedTemplate(template, {hidden: true}, propertyIdentityOrBooleanAttribute)
+      const instance = new TemplateInstance(template, {hidden: true}, propertyIdentityOrBooleanAttribute)
       const root = document.createElement('div')
       root.appendChild(instance)
       expect(root.innerHTML).to.equal(`<div hidden=""></div>`)
@@ -114,7 +114,7 @@ describe('stamped-template', () => {
     it('allows attributes to be toggled on even when starting off', () => {
       const template = document.createElement('template')
       template.innerHTML = `<div hidden="{{ hidden }}"></div>`
-      const instance = new StampedTemplate(template, {hidden: false}, propertyIdentityOrBooleanAttribute)
+      const instance = new TemplateInstance(template, {hidden: false}, propertyIdentityOrBooleanAttribute)
       const root = document.createElement('div')
       root.appendChild(instance)
       expect(root.innerHTML).to.equal(`<div></div>`)
@@ -127,7 +127,7 @@ describe('stamped-template', () => {
     it('only toggles attributes with boolean class properties', () => {
       const template = document.createElement('template')
       template.innerHTML = `<input required="{{a}}" aria-disabled="{{a}}" hidden="{{a}}" value="{{a}}"/>`
-      const instance = new StampedTemplate(template, {a: false}, propertyIdentityOrBooleanAttribute)
+      const instance = new TemplateInstance(template, {a: false}, propertyIdentityOrBooleanAttribute)
       const root = document.createElement('div')
       root.appendChild(instance)
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
