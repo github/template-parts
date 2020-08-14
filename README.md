@@ -21,7 +21,7 @@ With this library, and that given template, one could implement the following:
 ```js
 import {TemplateInstance} from '@github/template-parts'
 
-const tpl = new TemplateInstance(document.getElementById('foo'), { x: 'Hello', y: 'bar'})
+const tpl = new TemplateInstance(document.getElementById('some-template'), { x: 'Hello', y: 'bar'})
 
 document.appendChild(tpl)
 ```
