@@ -39,8 +39,8 @@ To use the `propertyIdentityOrBooleanAttribute`, import it and pass it as a thir
 import {TemplateInstance, propertyIdentityOrBooleanAttribute} from '@github/template-parts'
 
 // This will simply replace `{{x}}` with `"Hello"` and `{{y}}` with `"bar"`
-const tpl = new StampedTemplate(document.getElementById('foo'), { x: 'Hello', y: 'bar'})
+const tpl = new TemplateInstance(document.getElementById('foo'), { x: 'Hello', y: 'bar'})
 
 // The `propertyIdentityOrBooleanAttribute` processor will check for `false`/`true` values which map to Template Part values that are assigned to attributes, and add/remove the attribute.
-const tpl = new StampedTemplate(document.getElementById('foo'), propertyIdentityOrBooleanAttribute, { x: 'Hello', hidden: false})
+const tpl = new TemplateInstance(document.getElementById('foo'), { x: 'Hello', hidden: false}, propertyIdentityOrBooleanAttribute)
 ```
