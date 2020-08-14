@@ -96,7 +96,8 @@ describe('stamped-template', () => {
       instance.update({x: 'bing', y: 'bong', z: 'quux'})
       expect(root.innerHTML).to.equal(`<div class="my-bing-state bong">quux</div>`)
     })
-
+  })
+  describe('updating with propertyIdentityOrBooleanAttribute', () => {
     it('allows attributes to be toggled on and off', () => {
       const template = document.createElement('template')
       template.innerHTML = `<div hidden="{{ hidden }}"></div>`
@@ -121,6 +122,19 @@ describe('stamped-template', () => {
       expect(root.innerHTML).to.equal(`<div hidden=""></div>`)
       instance.update({hidden: false})
       expect(root.innerHTML).to.equal(`<div></div>`)
+    })
+
+    it('only toggles attributes with boolean class properties', () => {
+      const template = document.createElement('template')
+      template.innerHTML = `<input required="{{a}}" aria-disabled="{{a}}" hidden="{{a}}" value="{{a}}"/>`
+      const instance = new StampedTemplate(template, {a: false}, propertyIdentityOrBooleanAttribute)
+      const root = document.createElement('div')
+      root.appendChild(instance)
+      expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
+      instance.update({a: true})
+      expect(root.innerHTML).to.equal(`<input aria-disabled="true" value="true" required="" hidden="">`)
+      instance.update({a: false})
+      expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
     })
   })
 })
