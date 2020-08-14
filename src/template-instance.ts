@@ -2,7 +2,7 @@ import {parse} from './template-string-parser.js'
 import {AttributeValueSetter, AttributeTemplatePart} from './attribute-template-part.js'
 import {NodeTemplatePart} from './node-template-part.js'
 import {propertyIdentity} from './processors.js'
-import {TemplatePart, StampedTemplateProcessor, Params} from './types.js'
+import {TemplatePart, TemplateTypeInit, Params} from './types.js'
 
 function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   const walker = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null, false)
@@ -38,7 +38,7 @@ export class TemplateInstance extends DocumentFragment {
   #processor: TemplateTypeInit
   #parts: Iterable<TemplatePart>
 
-  constructor(template: HTMLTemplateElement, params: Params, processor: StampedTemplateProcessor = propertyIdentity) {
+  constructor(template: HTMLTemplateElement, params: Params, processor: TemplateTypeInit = propertyIdentity) {
     super()
     this.appendChild(template.content.cloneNode(true))
     this.#parts = Array.from(collectParts(this))

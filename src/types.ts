@@ -3,6 +3,6 @@ export interface TemplatePart {
   value: string | null
 }
 
-export type StampedTemplateProcessor = (parts: Iterable<TemplatePart>, params: Params) => void
+export type TemplateTypeInit = (parts: Iterable<TemplatePart>, params: Params) => void
 
 export type Params = Record<string, unknown>
