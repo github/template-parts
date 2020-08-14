@@ -16,7 +16,6 @@ export function propertyIdentityOrBooleanAttribute(
     if (
       typeof value === 'boolean' &&
       part instanceof AttributeTemplatePart &&
-      part.attributeName in part.element &&
       typeof part.element[part.attributeName as keyof Element] === 'boolean'
     ) {
       part.booleanValue = value
