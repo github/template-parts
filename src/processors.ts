@@ -3,10 +3,10 @@ import type {TemplateInstance} from './template-instance.js'
 import {AttributeTemplatePart} from './attribute-template-part.js'
 
 export const propertyIdentity = {
-  createCallback(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
-    this.processCallback(parts, params)
+  createCallback(instance: TemplateInstance, parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
+    this.processCallback(instance, parts, params)
   },
-  processCallback(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
+  processCallback(instance: TemplateInstance, parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
     for (const part of parts) {
       part.value = String(params[part.expression] ?? '')
     }
@@ -14,10 +14,10 @@ export const propertyIdentity = {
 }
 
 export const propertyIdentityOrBooleanAttribute = {
-  createCallback(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
-    this.processCallback(parts, params)
+  createCallback(instance: TemplateInstance, parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
+    this.processCallback(instance, parts, params)
   },
-  processCallback(parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
+  processCallback(instance: TemplateInstance, parts: Iterable<TemplatePart>, params: Record<string, unknown>): void {
     for (const part of parts) {
       const value: unknown = params[part.expression] ?? ''
       if (
