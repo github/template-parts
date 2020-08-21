@@ -1,7 +1,7 @@
 import {TemplateInstance} from '../lib/template-instance.js'
 import {propertyIdentityOrBooleanAttribute} from '../lib/processors.js'
 
-describe('stamped-template', () => {
+describe('template-instance', () => {
   it('applies data to templated text nodes', () => {
     const template = document.createElement('template')
     const originalHTML = `{{x}}`
@@ -76,7 +76,7 @@ describe('stamped-template', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
     template.innerHTML = originalHTML
-    const instance = new TemplateInstance(template, {a: 'foo', b: 'bar', c: 'baz'}, () => null)
+    const instance = new TemplateInstance(template)
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
     root.appendChild(instance)
@@ -97,6 +97,19 @@ describe('stamped-template', () => {
       expect(root.innerHTML).to.equal(`<div class="my-bing-state bong">quux</div>`)
     })
 
+    it('performs noop when update() is called with partial args', () => {
+      const template = document.createElement('template')
+      const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
+      template.innerHTML = originalHTML
+      const instance = new TemplateInstance(template, {x: 'foo', y: 'bar', z: 'baz'})
+      expect(template.innerHTML).to.equal(originalHTML)
+      const root = document.createElement('div')
+      root.appendChild(instance)
+      expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
+      instance.update({y: 'boo'})
+      expect(root.innerHTML).to.equal(`<div class="my-foo-state boo">baz</div>`)
+    })
+
     it('is a noop when update() is called with no args', () => {
       const template = document.createElement('template')
       const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
@@ -110,6 +123,7 @@ describe('stamped-template', () => {
       expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
     })
   })
+
   describe('updating with propertyIdentityOrBooleanAttribute', () => {
     it('allows attributes to be toggled on and off', () => {
       const template = document.createElement('template')
@@ -150,14 +164,34 @@ describe('stamped-template', () => {
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
     })
 
-    it('is a noop when `update()` is called with no args', () => {
+    it('clears mustache when no args given', () => {
       const template = document.createElement('template')
-      template.innerHTML = `<input required="{{a}}" aria-disabled="{{a}}" hidden="{{a}}" value="{{a}}"/>`
-      const instance = new TemplateInstance(template, {a: false}, propertyIdentityOrBooleanAttribute)
+      template.innerHTML = `<input required="{{a}}" aria-disabled="{{a}}" hidden="{{b}}" value="{{b}}"/>`
+      const instance = new TemplateInstance(template, null, propertyIdentityOrBooleanAttribute)
       const root = document.createElement('div')
       root.appendChild(instance)
-      expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
+      expect(root.innerHTML).to.equal(`<input required="" aria-disabled="" hidden="" value="">`)
+    })
+
+    it('is a noop when `update()` is called with no args', () => {
+      const template = document.createElement('template')
+      template.innerHTML = `<input required="{{a}}" aria-disabled="{{a}}" hidden="{{b}}" value="{{b}}"/>`
+      const instance = new TemplateInstance(template, {a: false, b: true}, propertyIdentityOrBooleanAttribute)
+      const root = document.createElement('div')
+      root.appendChild(instance)
+      expect(root.innerHTML).to.equal(`<input aria-disabled="false" hidden="" value="true">`)
       instance.update()
+      expect(root.innerHTML).to.equal(`<input aria-disabled="false" hidden="" value="true">`)
+    })
+
+    it('is a noop when `update()` is called with no args', () => {
+      const template = document.createElement('template')
+      template.innerHTML = `<input required="{{a}}" aria-disabled="{{a}}" hidden="{{b}}" value="{{b}}"/>`
+      const instance = new TemplateInstance(template, {a: false, b: true}, propertyIdentityOrBooleanAttribute)
+      const root = document.createElement('div')
+      root.appendChild(instance)
+      expect(root.innerHTML).to.equal(`<input aria-disabled="false" hidden="" value="true">`)
+      instance.update({b: false})
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
     })
   })
