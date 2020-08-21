@@ -7,9 +7,9 @@ export const propertyIdentity = {
     this.processCallback(instance, parts, params)
   },
   processCallback(instance: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown): void {
-    if (!params || typeof params !== 'object') return
+    if (typeof params !== 'object' || !params) return
     for (const part of parts) {
-      if (!params || !(part.expression in params)) continue
+      if (!(part.expression in params)) continue
       part.value = String((params as Record<string, unknown>)[part.expression] ?? '')
     }
   }
@@ -20,9 +20,9 @@ export const propertyIdentityOrBooleanAttribute = {
     this.processCallback(instance, parts, params)
   },
   processCallback(instance: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown): void {
-    if (!params || typeof params !== 'object') return
+    if (typeof params !== 'object' || !params) return
     for (const part of parts) {
-      if (!params || !(part.expression in params)) continue
+      if (!(part.expression in params)) continue
       const value = (params as Record<string, unknown>)[part.expression] ?? ''
       if (
         typeof value === 'boolean' &&
