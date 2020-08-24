@@ -10,7 +10,7 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers: process.platform === 'darwin' ? ['ChromeHeadless', 'Safari'] : ['ChromeHeadless'],
+    browsers: process.platform === 'darwin' ? ['ChromeHeadless', 'SafariNative'] : ['ChromeHeadless'],
     autoWatch: false,
     singleRun: true,
     concurrency: Infinity
