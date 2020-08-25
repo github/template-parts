@@ -20,13 +20,14 @@
         <a href="https://github.com/{{ username }}">@{{ username }}</a>
         added at
         <time>{{ timestamp }}</time>
+        <small>({{seconds}} seconds ago)</small>
       </li>
     </template>
     <ol id="list"></ol>
   </main>
 
   <script type="module">
-    // import {TemplateInstance, propertyIdentity} from '../lib/index.js'
+    //import {TemplateInstance, propertyIdentity} from '../lib/index.js'
     import {TemplateInstance, propertyIdentity} from 'https://unpkg.com/@github/template-parts@latest/lib/index.js'
     const template = document.getElementById('template')
     const form = document.getElementById('form')
@@ -34,9 +35,14 @@
     const usernameField = document.getElementById('username')
     form.addEventListener('submit', event => {
       event.preventDefault()
-      const timestamp = new Date().toLocaleTimeString()
+      const date = new Date()
+      const timestamp = date.toLocaleTimeString()
       const username = usernameField.value
-      list.append(new TemplateInstance(template, {timestamp, username}))
+      const instance = new TemplateInstance(template, {timestamp, username, seconds: 0})
+      list.append(instance)
+      setInterval(() => { instance.update({
+        seconds: Math.floor((Date.now() - date)/1000)
+      })}, 1000)
       usernameField.value = ''
     })
   </script>

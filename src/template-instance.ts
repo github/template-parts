@@ -40,6 +40,12 @@ export class TemplateInstance extends DocumentFragment {
 
   constructor(template: HTMLTemplateElement, params: unknown, processor: TemplateTypeInit = propertyIdentity) {
     super()
+    // This is to fix an inconsistency in Safari which prevents us from
+    // correctly sub-classing DocumentFragment.
+    // https://bugs.webkit.org/show_bug.cgi?id=195556
+    if (Object.getPrototypeOf(this !== TemplateInstance.prototype)) {
+      Object.setPrototypeOf(this, TemplateInstance.prototype)
+    }
     this.appendChild(template.content.cloneNode(true))
     this.#parts = Array.from(collectParts(this))
     this.#processor = processor
