@@ -1,7 +1,7 @@
 {
   "name": "@github/template-parts",
   "version": "0.2.2",
-  "description": "An implementation of the Template Parts proposal (https://github.com/domenic/template-parts)",
+  "description": "An implementation of the TemplateInstance proposal (https://github.com/w3c/webcomponents/blob/159b1600bab02fe9cd794825440a98537d53b389/proposals/Template-Instantiation.md)",
   "homepage": "https://github.github.io/template-parts",
   "bugs": {
     "url": "https://github.com/github/template-parts/issues"
