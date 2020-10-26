@@ -52,7 +52,7 @@ export class TemplateInstance extends DocumentFragment {
     this.#processor.createCallback?.(this, this.#parts, params)
   }
 
-  update(params: Record<string, unknown>): void {
+  update(params: unknown): void {
     this.#processor.processCallback(this, this.#parts, params)
   }
 }
