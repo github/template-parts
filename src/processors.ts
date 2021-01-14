@@ -2,7 +2,7 @@ import type {TemplatePart, TemplateTypeInit} from './types.js'
 import type {TemplateInstance} from './template-instance.js'
 import {AttributeTemplatePart} from './attribute-template-part.js'
 
-type PartProcessor = (part: TemplatePart, params: unknown) => void
+type PartProcessor = (part: TemplatePart, value: unknown) => void
 
 export function createProcessor(processPart: PartProcessor): TemplateTypeInit {
   return {
@@ -11,17 +11,21 @@ export function createProcessor(processPart: PartProcessor): TemplateTypeInit {
     },
     processCallback(_: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown): void {
       if (typeof params !== 'object' || !params) return
-      for (const part of parts) if (part.expression in params) processPart(part, params)
+      for (const part of parts) {
+        if (part.expression in params) {
+          const value = (params as Record<string, unknown>)[part.expression] ?? ''
+          processPart(part, value)
+        }
+      }
     }
   }
 }
 
-export function processPropertyIdentity(part: TemplatePart, params: unknown): void {
-  part.value = String((params as Record<string, unknown>)[part.expression] ?? '')
+export function processPropertyIdentity(part: TemplatePart, value: unknown): void {
+  part.value = String(value)
 }
 
-export function processBooleanAttribute(part: TemplatePart, params: unknown): boolean {
-  const value = (params as Record<string, unknown>)[part.expression] ?? ''
+export function processBooleanAttribute(part: TemplatePart, value: unknown): boolean {
   if (
     typeof value === 'boolean' &&
     part instanceof AttributeTemplatePart &&
@@ -34,6 +38,6 @@ export function processBooleanAttribute(part: TemplatePart, params: unknown): bo
 }
 
 export const propertyIdentity = createProcessor(processPropertyIdentity)
-export const propertyIdentityOrBooleanAttribute = createProcessor((part: TemplatePart, params: unknown) => {
-  processBooleanAttribute(part, params) || processPropertyIdentity(part, params)
+export const propertyIdentityOrBooleanAttribute = createProcessor((part: TemplatePart, value: unknown) => {
+  processBooleanAttribute(part, value) || processPropertyIdentity(part, value)
 })
