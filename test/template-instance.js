@@ -1,5 +1,5 @@
 import {TemplateInstance} from '../lib/template-instance.js'
-import {propertyIdentityOrBooleanAttribute} from '../lib/processors.js'
+import {propertyIdentityOrBooleanAttribute, createProcessor} from '../lib/processors.js'
 
 describe('template-instance', () => {
   it('applies data to templated text nodes', () => {
@@ -193,6 +193,23 @@ describe('template-instance', () => {
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" hidden="" value="true">`)
       instance.update({b: false})
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
+    })
+  })
+  
+  describe('edge cases', () => {
+    describe('NodeTemplatePart', () => {
+      it('replaces an empty replace() call with an empty text node', () => {
+        const template = document.createElement('template')
+        template.innerHTML = `<div>{{a}}</div>`
+        const instance = new TemplateInstance(template, {a: true}, createProcessor((part) => {
+          part.replace()
+          part.replace()
+          part.replace()
+        }))
+        const root = document.createElement('div')
+        root.appendChild(instance)
+        expect(root.innerHTML).to.equal(`<div></div>`)
+      })
     })
   })
 })
