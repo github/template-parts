@@ -195,17 +195,21 @@ describe('template-instance', () => {
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" value="false">`)
     })
   })
-  
+
   describe('edge cases', () => {
     describe('NodeTemplatePart', () => {
       it('replaces an empty replace() call with an empty text node', () => {
         const template = document.createElement('template')
         template.innerHTML = `<div>{{a}}</div>`
-        const instance = new TemplateInstance(template, {a: true}, createProcessor((part) => {
-          part.replace()
-          part.replace()
-          part.replace()
-        }))
+        const instance = new TemplateInstance(
+          template,
+          {a: true},
+          createProcessor(part => {
+            part.replace()
+            part.replace()
+            part.replace()
+          })
+        )
         const root = document.createElement('div')
         root.appendChild(instance)
         expect(root.innerHTML).to.equal(`<div></div>`)
