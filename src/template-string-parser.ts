@@ -17,7 +17,7 @@ export function parse(text: string): readonly Token[] {
   let value = ''
   let tokenStart = 0
   let open = false
-  let items: Token[] = []
+  const items: Token[] = []
   for (let i = 0; i < text.length; i += 1) {
     if (text[i] === '{' && text[i + 1] === '{' && text[i - 1] !== '\\' && !open) {
       open = true
