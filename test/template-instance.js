@@ -219,7 +219,7 @@ describe('template-instance', () => {
 
   describe('custom processors', () => {
     describe('createCallback', () => {
-      it('is called on construction, if present', () => {
+      it('is called once on construction, if present', () => {
         const template = document.createElement('template')
         template.innerHTML = `<div>{{a}}</div>`
         let createCallCount = 0
@@ -260,8 +260,8 @@ describe('template-instance', () => {
       })
     })
 
-    describe('createCallback', () => {
-      it('is called on construction, if present', () => {
+    describe('processCallback', () => {
+      it('is called on construction', () => {
         const template = document.createElement('template')
         template.innerHTML = `<div>{{a}}</div>`
         let processCallCount = 0
