@@ -216,4 +216,84 @@ describe('template-instance', () => {
       })
     })
   })
+
+  describe('custom processors', () => {
+    describe('createCallback', () => {
+      it('is called on construction, if present', () => {
+        const template = document.createElement('template')
+        template.innerHTML = `<div>{{a}}</div>`
+        let createCallCount = 0
+        new TemplateInstance(
+          template,
+          {a: true},
+          {
+            createCallback() {
+              createCallCount += 1
+            },
+            processCallback() {
+              return
+            }
+          }
+        )
+        expect(createCallCount).to.equal(1)
+      })
+
+      it('is not called on update', () => {
+        const template = document.createElement('template')
+        template.innerHTML = `<div>{{a}}</div>`
+        let createCallCount = 0
+        const instance = new TemplateInstance(
+          template,
+          {a: true},
+          {
+            createCallback() {
+              createCallCount += 1
+            },
+            processCallback() {
+              return
+            }
+          }
+        )
+        expect(createCallCount).to.equal(1)
+        instance.update({a: false})
+        expect(createCallCount).to.equal(1)
+      })
+    })
+
+    describe('createCallback', () => {
+      it('is called on construction, if present', () => {
+        const template = document.createElement('template')
+        template.innerHTML = `<div>{{a}}</div>`
+        let processCallCount = 0
+        new TemplateInstance(
+          template,
+          {a: true},
+          {
+            processCallback() {
+              processCallCount += 1
+            }
+          }
+        )
+        expect(processCallCount).to.equal(1)
+      })
+
+      it('is called on update', () => {
+        const template = document.createElement('template')
+        template.innerHTML = `<div>{{a}}</div>`
+        let processCallCount = 0
+        const instance = new TemplateInstance(
+          template,
+          {a: true},
+          {
+            processCallback() {
+              processCallCount += 1
+            }
+          }
+        )
+        expect(processCallCount).to.equal(1)
+        instance.update({a: false})
+        expect(processCallCount).to.equal(2)
+      })
+    })
+  })
 })
