@@ -6,9 +6,6 @@ type PartProcessor = (part: TemplatePart, value: unknown) => void
 
 export function createProcessor(processPart: PartProcessor): TemplateTypeInit {
   return {
-    createCallback(instance: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown): void {
-      this.processCallback(instance, parts, params)
-    },
     processCallback(_: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown): void {
       if (typeof params !== 'object' || !params) return
       for (const part of parts) {

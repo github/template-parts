@@ -50,6 +50,7 @@ export class TemplateInstance extends DocumentFragment {
     this.#parts = Array.from(collectParts(this))
     this.#processor = processor
     this.#processor.createCallback?.(this, this.#parts, params)
+    this.#processor.processCallback(this, this.#parts, params)
   }
 
   update(params: unknown): void {
