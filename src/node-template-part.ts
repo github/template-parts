@@ -1,15 +1,17 @@
 import {TemplatePart} from './types.js'
 
+const parts = new WeakMap<NodeTemplatePart, ChildNode[]>()
 export class NodeTemplatePart implements TemplatePart {
-  #parts: ChildNode[]
-
   constructor(node: ChildNode, public expression: string) {
-    this.#parts = [node]
+    parts.set(this, [node])
     node.textContent = ''
   }
 
   get value(): string {
-    return this.#parts.map(node => node.textContent).join('')
+    return parts
+      .get(this)!
+      .map(node => node.textContent)
+      .join('')
   }
 
   set value(string: string) {
@@ -17,21 +19,21 @@ export class NodeTemplatePart implements TemplatePart {
   }
 
   get previousSibling(): ChildNode | null {
-    return this.#parts[0].previousSibling
+    return parts.get(this)![0].previousSibling
   }
 
   get nextSibling(): ChildNode | null {
-    return this.#parts[this.#parts.length - 1].nextSibling
+    return parts.get(this)![parts.get(this)!.length - 1].nextSibling
   }
 
   replace(...nodes: Array<string | ChildNode>): void {
-    const parts: ChildNode[] = nodes.map(node => {
+    const normalisedNodes: ChildNode[] = nodes.map(node => {
       if (typeof node === 'string') return new Text(node)
       return node
     })
-    if (!parts.length) parts.push(new Text(''))
-    this.#parts[0].before(...parts)
-    for (const part of this.#parts) part.remove()
-    this.#parts = parts
+    if (!normalisedNodes.length) normalisedNodes.push(new Text(''))
+    parts.get(this)![0].before(...normalisedNodes)
+    for (const part of parts.get(this)!) part.remove()
+    parts.set(this, normalisedNodes)
   }
 }
