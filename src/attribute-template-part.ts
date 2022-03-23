@@ -1,41 +1,40 @@
 import {TemplatePart} from './types.js'
 
+const setters = new WeakMap<AttributeTemplatePart, AttributeValueSetter>()
+const values = new WeakMap<AttributeTemplatePart, string>()
 export class AttributeTemplatePart implements TemplatePart {
-  #setter: AttributeValueSetter
-  #value = ''
-
   constructor(setter: AttributeValueSetter, public expression: string) {
-    this.#setter = setter
-    this.#setter.updateParent('')
+    setters.set(this, setter)
+    setter.updateParent('')
   }
 
   get attributeName(): string {
-    return this.#setter.attr.name
+    return setters.get(this)!.attr.name
   }
 
   get attributeNamespace(): string | null {
-    return this.#setter.attr.namespaceURI
+    return setters.get(this)!.attr.namespaceURI
   }
 
   get value(): string | null {
-    return this.#value
+    return values.get(this)!
   }
 
   set value(value: string | null) {
-    this.#value = value || ''
-    this.#setter.updateParent(value)
+    values.set(this, value || '')
+    setters.get(this)!.updateParent(value)
   }
 
   get element(): Element {
-    return this.#setter.element
+    return setters.get(this)!.element
   }
 
   get booleanValue(): boolean {
-    return this.#setter.booleanValue
+    return setters.get(this)!.booleanValue
   }
 
   set booleanValue(value: boolean) {
-    this.#setter.booleanValue = value
+    setters.get(this)!.booleanValue = value
   }
 }
 

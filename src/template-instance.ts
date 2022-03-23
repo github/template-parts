@@ -34,10 +34,9 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   }
 }
 
+const processors = new WeakMap<TemplateInstance, TemplateTypeInit>()
+const parts = new WeakMap<TemplateInstance, Iterable<TemplatePart>>()
 export class TemplateInstance extends DocumentFragment {
-  #processor: TemplateTypeInit
-  #parts: Iterable<TemplatePart>
-
   constructor(template: HTMLTemplateElement, params: unknown, processor: TemplateTypeInit = propertyIdentity) {
     super()
     // This is to fix an inconsistency in Safari which prevents us from
@@ -47,13 +46,13 @@ export class TemplateInstance extends DocumentFragment {
       Object.setPrototypeOf(this, TemplateInstance.prototype)
     }
     this.appendChild(template.content.cloneNode(true))
-    this.#parts = Array.from(collectParts(this))
-    this.#processor = processor
-    this.#processor.createCallback?.(this, this.#parts, params)
-    this.#processor.processCallback(this, this.#parts, params)
+    parts.set(this, Array.from(collectParts(this)))
+    processors.set(this, processor)
+    processors.get(this)!.createCallback?.(this, parts.get(this)!, params)
+    processors.get(this)!.processCallback(this, parts.get(this)!, params)
   }
 
   update(params: unknown): void {
-    this.#processor.processCallback(this, this.#parts, params)
+    processors.get(this)!.processCallback(this, parts.get(this)!, params)
   }
 }
