@@ -6,10 +6,10 @@ describe('AttributeValue', () => {
     const el = document.createElement('div')
     const attr = document.createAttribute('class')
     const instance = new AttributeValueSetter(el, attr)
-    const part = new AttributeTemplatePart(instance)
+    const part = new AttributeTemplatePart(instance, '')
     part.value = 'foo'
     instance.partList = [part]
-    instance.updateParent()
+    instance.updateParent('')
     expect(el.getAttribute('class')).to.equal('foo')
   })
 })
@@ -19,11 +19,11 @@ describe('AttributeTemplatePart', () => {
     const el = document.createElement('div')
     const attr = document.createAttribute('class')
     const instance = new AttributeValueSetter(el, attr)
-    instance.partList = [new AttributeTemplatePart(instance), new AttributeTemplatePart(instance)]
-    instance.partList[0].value = 'hello'
-    instance.partList[1].value = ' world'
+    instance.partList = [new AttributeTemplatePart(instance, 'x'), new AttributeTemplatePart(instance, 'x')]
+    ;(instance.partList[0] as AttributeTemplatePart).value = 'hello'
+    ;(instance.partList[1] as AttributeTemplatePart).value = ' world'
     expect(el.getAttribute('class')).to.equal('hello world')
-    instance.partList[0].value = 'goodbye'
+    ;(instance.partList[0] as AttributeTemplatePart).value = 'goodbye'
     expect(el.getAttribute('class')).to.equal('goodbye world')
   })
 })

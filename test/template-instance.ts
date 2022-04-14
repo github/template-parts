@@ -1,5 +1,6 @@
 import {expect} from '@open-wc/testing'
 import {TemplateInstance} from '../src/template-instance'
+import type {NodeTemplatePart} from '../src/node-template-part'
 import {propertyIdentityOrBooleanAttribute, createProcessor} from '../src/processors'
 
 describe('template-instance', () => {
@@ -77,6 +78,7 @@ describe('template-instance', () => {
     const template = document.createElement('template')
     const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
     template.innerHTML = originalHTML
+    // @ts-expect-error intentionally missing arguments
     const instance = new TemplateInstance(template)
     expect(template.innerHTML).to.equal(originalHTML)
     const root = document.createElement('div')
@@ -120,6 +122,7 @@ describe('template-instance', () => {
       const root = document.createElement('div')
       root.appendChild(instance)
       expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
+      // @ts-expect-error intentionally calling with no args
       instance.update()
       expect(root.innerHTML).to.equal(`<div class="my-foo-state bar">baz</div>`)
     })
@@ -181,6 +184,7 @@ describe('template-instance', () => {
       const root = document.createElement('div')
       root.appendChild(instance)
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" hidden="" value="true">`)
+      // @ts-expect-error intentionally calling with no args
       instance.update()
       expect(root.innerHTML).to.equal(`<input aria-disabled="false" hidden="" value="true">`)
     })
@@ -206,9 +210,9 @@ describe('template-instance', () => {
           template,
           {a: true},
           createProcessor(part => {
-            part.replace()
-            part.replace()
-            part.replace()
+            ;(part as NodeTemplatePart).replace()
+            ;(part as NodeTemplatePart).replace()
+            ;(part as NodeTemplatePart).replace()
           })
         )
         const root = document.createElement('div')

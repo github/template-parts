@@ -1,12 +1,12 @@
 import {expect, chai} from '@open-wc/testing'
-import {parse} from '../src/template-string-parser'
+import {Token, parse} from '../src/template-string-parser'
 chai.config.truncateThreshold = Infinity
 
-function parserTest(message, ...tests) {
+function parserTest(message: string, ...tests: Array<string | Token[]>) {
   describe(message, () => {
     for (let i = 0; i < tests.length; i += 2) {
-      it(tests[i], () => {
-        const output = parse(tests[i])
+      it(String(tests[i]), () => {
+        const output = parse(String(tests[i]))
         let n = 0
         for (const token of output) {
           expect(token)

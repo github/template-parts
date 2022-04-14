@@ -19,9 +19,10 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc --build",
-    "clean": "tsc --build --clean",
-    "lint": "eslint . --ignore-path .gitignore",
+    "build": "tsc --build tsconfig.build.json",
+    "clean": "tsc --build --clean tsconfig.build.json",
+    "lint": "tsc && eslint . --ignore-path .gitignore",
+    "prepack": "npm run build",
     "postpublish": "npm publish --ignore-scripts --@github:registry='https://npm.pkg.github.com'",
     "pretest": "npm run lint",
     "test": "wtr --coverage",
