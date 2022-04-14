@@ -1,4 +1,5 @@
-import {parse} from '../lib/template-string-parser.js'
+import {expect, chai} from '@open-wc/testing'
+import {parse} from '../src/template-string-parser'
 chai.config.truncateThreshold = Infinity
 
 function parserTest(message, ...tests) {

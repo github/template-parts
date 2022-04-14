@@ -1,5 +1,6 @@
-import {TemplateInstance} from '../lib/template-instance.js'
-import {propertyIdentityOrBooleanAttribute, createProcessor} from '../lib/processors.js'
+import {expect} from '@open-wc/testing'
+import {TemplateInstance} from '../src/template-instance'
+import {propertyIdentityOrBooleanAttribute, createProcessor} from '../src/processors'
 
 describe('template-instance', () => {
   it('applies data to templated text nodes', () => {

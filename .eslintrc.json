@@ -12,10 +12,6 @@
       "rules": {
         "github/unescaped-html-literal": "off"
       },
-      "globals": {
-        "chai": false,
-        "expect": false
-      },
       "env": {
         "mocha": true
       }

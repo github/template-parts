@@ -1,4 +1,5 @@
-import {AttributeValueSetter, AttributeTemplatePart} from '../lib/attribute-template-part.js'
+import {expect} from '@open-wc/testing'
+import {AttributeValueSetter, AttributeTemplatePart} from '../src/attribute-template-part'
 
 describe('AttributeValue', () => {
   it('updates the given attribute from partList when updateParent is called', () => {

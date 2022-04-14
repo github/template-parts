@@ -1,5 +1,6 @@
-import {TemplateInstance} from '../lib/template-instance.js'
-import {createProcessor} from '../lib/processors.js'
+import {expect} from '@open-wc/testing'
+import {TemplateInstance} from '../src/template-instance'
+import {createProcessor} from '../src/processors'
 describe('createProcessor', () => {
   let calls = 0
   let processor

@@ -22,26 +22,20 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "lint": "eslint . --ignore-path .gitignore",
-    "pretest": "npm run build",
-    "test": "npm run lint && karma start test/karma.config.cjs",
-    "postpublish": "npm publish --ignore-scripts --@github:registry='https://npm.pkg.github.com'"
+    "postpublish": "npm publish --ignore-scripts --@github:registry='https://npm.pkg.github.com'",
+    "pretest": "npm run lint",
+    "test": "wtr --coverage",
+    "test:watch": "concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\""
   },
   "prettier": "@github/prettier-config",
   "devDependencies": {
     "@github/prettier-config": "^0.0.4",
-    "chai": "^4.3.4",
-    "chai-spies": "^1.0.0",
-    "chromium": "^3.0.3",
+    "@open-wc/testing": "^3.1.2",
+    "@web/dev-server-esbuild": "^0.3.0",
+    "@web/test-runner": "^0.10.1",
+    "concurrently": "^7.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-github": "^4.1.5",
-    "karma": "^6.3.4",
-    "karma-chai": "^0.1.0",
-    "karma-chai-spies": "^0.1.4",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-mocha": "^2.0.1",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-safarinative-launcher": "^1.1.0",
-    "mocha": "^9.0.3",
     "typescript": "^4.3.5"
   }
 }
