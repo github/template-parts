@@ -1,5 +1,5 @@
 {
-  "exclude": ["__tests__"],
+  "exclude": ["test"],
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "declaration": true,
