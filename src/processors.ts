@@ -19,7 +19,7 @@ export function createProcessor(processPart: PartProcessor): TemplateTypeInit {
 }
 
 export function processPropertyIdentity(part: TemplatePart, value: unknown): void {
-  part.value = String(value)
+  part.value = value instanceof Element ? value : String(value)
 }
 
 export function processBooleanAttribute(part: TemplatePart, value: unknown): boolean {

@@ -14,6 +14,19 @@ describe('template-instance', () => {
     root.appendChild(instance)
     expect(root.innerHTML).to.equal(`Hello world`)
   })
+  it('applies data to templated element nodes', () => {
+    const template = document.createElement('template')
+    const element = Object.assign(document.createElement('div'), {
+      innerHTML: 'Hello world'
+    })
+    const originalHTML = `{{x}}`
+    template.innerHTML = originalHTML
+    const instance = new TemplateInstance(template, {x: element})
+    expect(template.innerHTML).to.equal(originalHTML)
+    const root = document.createElement('div')
+    root.appendChild(instance)
+    expect(root.innerHTML).to.equal(`<div>Hello world</div>`)
+  })
   it('can render into partial text nodes', () => {
     const template = document.createElement('template')
     const originalHTML = `Hello {{x}}!`

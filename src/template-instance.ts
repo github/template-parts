@@ -5,7 +5,7 @@ import {propertyIdentity} from './processors.js'
 import {TemplatePart, TemplateTypeInit} from './types.js'
 
 function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
-  const walker = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null, false)
+  const walker = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null)
   let node
   while ((node = walker.nextNode())) {
     if (node instanceof Element && node.hasAttributes()) {
