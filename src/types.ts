@@ -2,7 +2,7 @@ import type {TemplateInstance} from './template-instance.js'
 
 export interface TemplatePart {
   expression: string
-  value: string | null
+  value: Element | string | null
 }
 
 type TemplateProcessCallback = (instance: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown) => void
