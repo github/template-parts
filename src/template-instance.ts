@@ -40,7 +40,7 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
 
 const processors = new WeakMap<TemplateInstance, TemplateTypeInit>()
 const parts = new WeakMap<TemplateInstance, Iterable<TemplatePart>>()
-export class TemplateInstance extends DocumentFragment {
+export class TemplateInstance extends (globalThis.DocumentFragment || EventTarget) {
   constructor(template: HTMLTemplateElement, params: unknown, processor: TemplateTypeInit = propertyIdentity) {
     super()
     // This is to fix an inconsistency in Safari which prevents us from
