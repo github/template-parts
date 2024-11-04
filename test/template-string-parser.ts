@@ -22,14 +22,14 @@ function parserTest(message: string, ...tests: Array<string | Token[]>) {
   })
 }
 
-describe.only('template-string-parser', () => {
+describe('template-string-parser', () => {
   parserTest('extracts `{{}}` surrounding parts as part tokens', '{{x}}', [
-    {type: 'part', start: 0, end: 5, value: 'x'}
+    {type: 'part', start: 0, end: 5, value: 'x'},
   ])
 
   parserTest('tokenizes a template string successfully', 'hello {{x}}', [
     {type: 'string', start: 0, end: 6, value: 'hello '},
-    {type: 'part', start: 6, end: 11, value: 'x'}
+    {type: 'part', start: 6, end: 11, value: 'x'},
   ])
 
   parserTest(
@@ -39,7 +39,7 @@ describe.only('template-string-parser', () => {
       {type: 'string', start: 0, end: 6, value: 'hello '},
       {type: 'part', start: 6, end: 11, value: 'x'},
       {type: 'string', start: 11, end: 16, value: ' and '},
-      {type: 'part', start: 16, end: 21, value: 'y'}
+      {type: 'part', start: 16, end: 21, value: 'y'},
     ],
     'hello {{x}} and {{y}}!',
     [
@@ -47,8 +47,8 @@ describe.only('template-string-parser', () => {
       {type: 'part', start: 6, end: 11, value: 'x'},
       {type: 'string', start: 11, end: 16, value: ' and '},
       {type: 'part', start: 16, end: 21, value: 'y'},
-      {type: 'string', start: 21, end: 22, value: '!'}
-    ]
+      {type: 'string', start: 21, end: 22, value: '!'},
+    ],
   )
 
   parserTest(
@@ -57,13 +57,13 @@ describe.only('template-string-parser', () => {
     [
       {type: 'string', start: 0, end: 6, value: 'hello '},
       {type: 'part', start: 6, end: 11, value: 'x'},
-      {type: 'part', start: 11, end: 16, value: 'y'}
+      {type: 'part', start: 11, end: 16, value: 'y'},
     ],
     '{{x}}{{y}}{{z}}',
     [
       {type: 'part', start: 0, end: 5, value: 'x'},
       {type: 'part', start: 5, end: 10, value: 'y'},
-      {type: 'part', start: 10, end: 15, value: 'z'}
+      {type: 'part', start: 10, end: 15, value: 'z'},
     ],
     'abc{{def}}{{ghi}}{{jkl}}{{mno}}{{pqr}}{{stu}}vwxyz',
     [
@@ -74,12 +74,12 @@ describe.only('template-string-parser', () => {
       {type: 'part', start: 24, end: 31, value: 'mno'},
       {type: 'part', start: 31, end: 38, value: 'pqr'},
       {type: 'part', start: 38, end: 45, value: 'stu'},
-      {type: 'string', start: 45, end: 50, value: 'vwxyz'}
-    ]
+      {type: 'string', start: 45, end: 50, value: 'vwxyz'},
+    ],
   )
 
   parserTest('does not turn escaped `{{`s into expression tokens', '\\{{x}}', [
-    {type: 'string', start: 0, end: 6, value: '\\{{x}}'}
+    {type: 'string', start: 0, end: 6, value: '\\{{x}}'},
   ])
 
   parserTest('strips leading and trailing whitespace', '{{ x }}', [{type: 'part', start: 0, end: 7, value: 'x'}])
@@ -89,14 +89,14 @@ describe.only('template-string-parser', () => {
     '{{ x }}!',
     [
       {type: 'part', start: 0, end: 7, value: 'x'},
-      {type: 'string', start: 7, end: 8, value: '!'}
+      {type: 'string', start: 7, end: 8, value: '!'},
     ],
     'hello {{x}}!',
     [
       {type: 'string', start: 0, end: 6, value: 'hello '},
       {type: 'part', start: 6, end: 11, value: 'x'},
-      {type: 'string', start: 11, end: 12, value: '!'}
-    ]
+      {type: 'string', start: 11, end: 12, value: '!'},
+    ],
   )
 
   parserTest(
@@ -108,11 +108,11 @@ describe.only('template-string-parser', () => {
     '{{x\\}}',
     [{type: 'string', start: 0, end: 6, value: '{{x\\}}'}],
     '\\{{x}}',
-    [{type: 'string', start: 0, end: 6, value: '\\{{x}}'}]
+    [{type: 'string', start: 0, end: 6, value: '\\{{x}}'}],
   )
 
   parserTest('ignores single braces', 'hello ${world?}', [
-    {type: 'string', start: 0, end: 15, value: 'hello ${world?}'}
+    {type: 'string', start: 0, end: 15, value: 'hello ${world?}'},
   ])
 
   parserTest(
@@ -126,11 +126,11 @@ describe.only('template-string-parser', () => {
     'hello {{}{',
     [{type: 'string', start: 0, end: 10, value: 'hello {{}{'}],
     'hello }}{{}',
-    [{type: 'string', start: 0, end: 11, value: 'hello }}{{}'}]
+    [{type: 'string', start: 0, end: 11, value: 'hello }}{{}'}],
   )
 
   parserTest('ignores nested parens, treating them as text', '{{ "Your balance: {{ balance }}" }}', [
-    {type: 'part', start: 0, end: 35, value: '"Your balance: {{ balance }}"'}
+    {type: 'part', start: 0, end: 35, value: '"Your balance: {{ balance }}"'},
   ])
 
   parserTest(
@@ -139,18 +139,18 @@ describe.only('template-string-parser', () => {
     [
       {type: 'string', start: 0, end: 2, value: '{x'},
       {type: 'part', start: 2, end: 6, value: ''},
-      {type: 'string', start: 6, end: 7, value: '}'}
+      {type: 'string', start: 6, end: 7, value: '}'},
     ],
     '{{{x}}}',
     [
       {type: 'part', start: 0, end: 6, value: '{x'},
-      {type: 'string', start: 6, end: 7, value: '}'}
+      {type: 'string', start: 6, end: 7, value: '}'},
     ],
     '{}{{x}}}',
     [
       {type: 'string', start: 0, end: 2, value: '{}'},
       {type: 'part', start: 2, end: 7, value: 'x'},
-      {type: 'string', start: 7, end: 8, value: '}'}
-    ]
+      {type: 'string', start: 7, end: 8, value: '}'},
+    ],
   )
 })

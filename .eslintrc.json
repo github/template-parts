@@ -4,13 +4,20 @@
   "extends": ["plugin:github/recommended", "plugin:github/typescript", "plugin:github/browser"],
   "rules": {
     "no-invalid-this": "off",
-    "@typescript-eslint/no-invalid-this": ["error"]
+    "@typescript-eslint/no-invalid-this": "error"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": true
+    }
   },
   "overrides": [
     {
       "files": "test/*",
       "rules": {
-        "github/unescaped-html-literal": "off"
+        "github/unescaped-html-literal": "off",
+        "github/no-inner-html": "off",
+        "i18n-text/no-en": "off"
       },
       "env": {
         "mocha": true

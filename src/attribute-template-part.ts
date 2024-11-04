@@ -3,7 +3,10 @@ import {TemplatePart} from './types.js'
 const setters = new WeakMap<AttributeTemplatePart, AttributeValueSetter>()
 const values = new WeakMap<AttributeTemplatePart, string>()
 export class AttributeTemplatePart implements TemplatePart {
-  constructor(setter: AttributeValueSetter, public expression: string) {
+  constructor(
+    setter: AttributeValueSetter,
+    public expression: string,
+  ) {
     setters.set(this, setter)
     setter.updateParent('')
   }
@@ -41,7 +44,10 @@ export class AttributeTemplatePart implements TemplatePart {
 export class AttributeValueSetter {
   partList: Array<string | AttributeTemplatePart> = []
 
-  constructor(public element: Element, public attr: Attr) {}
+  constructor(
+    public element: Element,
+    public attr: Attr,
+  ) {}
 
   get booleanValue(): boolean {
     return this.element.hasAttributeNS(this.attr.namespaceURI, this.attr.name)

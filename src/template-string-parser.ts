@@ -36,8 +36,8 @@ export function parse(text: string): readonly Token[] {
               type: 'string',
               start: lastPos,
               end: tokenStart,
-              value: text.slice(lastPos, tokenStart)
-            })
+              value: text.slice(lastPos, tokenStart),
+            }),
           )
           lastPos = tokenStart
         }
@@ -46,8 +46,8 @@ export function parse(text: string): readonly Token[] {
             type: 'part',
             start: tokenStart,
             end: i + 2,
-            value: text.slice(lastPos + 2, i).trim()
-          })
+            value: text.slice(lastPos + 2, i).trim(),
+          }),
         )
         i += 1
         lastPos = i + 1

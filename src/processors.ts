@@ -14,7 +14,7 @@ export function createProcessor(processPart: PartProcessor): TemplateTypeInit {
           processPart(part, value)
         }
       }
-    }
+    },
   }
 }
 
@@ -36,5 +36,7 @@ export function processBooleanAttribute(part: TemplatePart, value: unknown): boo
 
 export const propertyIdentity = createProcessor(processPropertyIdentity)
 export const propertyIdentityOrBooleanAttribute = createProcessor((part: TemplatePart, value: unknown) => {
-  processBooleanAttribute(part, value) || processPropertyIdentity(part, value)
+  if (!processBooleanAttribute(part, value)) {
+    processPropertyIdentity(part, value)
+  }
 })

@@ -7,6 +7,6 @@ export {
   processPropertyIdentity,
   processBooleanAttribute,
   propertyIdentity,
-  propertyIdentityOrBooleanAttribute
+  propertyIdentityOrBooleanAttribute,
 } from './processors.js'
 export type {TemplatePart, TemplateTypeInit} from './types.js'

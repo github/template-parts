@@ -17,7 +17,7 @@ describe('template-instance', () => {
   it('applies data to templated element nodes', () => {
     const template = document.createElement('template')
     const element = Object.assign(document.createElement('div'), {
-      innerHTML: 'Hello world'
+      innerHTML: 'Hello world',
     })
     const originalHTML = `{{x}}`
     template.innerHTML = originalHTML
@@ -226,7 +226,7 @@ describe('template-instance', () => {
             ;(part as NodeTemplatePart).replace()
             ;(part as NodeTemplatePart).replace()
             ;(part as NodeTemplatePart).replace()
-          })
+          }),
         )
         const root = document.createElement('div')
         root.appendChild(instance)
@@ -250,8 +250,8 @@ describe('template-instance', () => {
             },
             processCallback() {
               return
-            }
-          }
+            },
+          },
         )
         expect(createCallCount).to.equal(1)
       })
@@ -269,8 +269,8 @@ describe('template-instance', () => {
             },
             processCallback() {
               return
-            }
-          }
+            },
+          },
         )
         expect(createCallCount).to.equal(1)
         instance.update({a: false})
@@ -289,8 +289,8 @@ describe('template-instance', () => {
           {
             processCallback() {
               processCallCount += 1
-            }
-          }
+            },
+          },
         )
         expect(processCallCount).to.equal(1)
       })
@@ -305,8 +305,8 @@ describe('template-instance', () => {
           {
             processCallback() {
               processCallCount += 1
-            }
-          }
+            },
+          },
         )
         expect(processCallCount).to.equal(1)
         instance.update({a: false})

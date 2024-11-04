@@ -3,7 +3,7 @@ export default {
   files: 'test/',
   nodeResolve: true,
   testFramework: {
-    config: {timeout: '100'}
+    config: {timeout: '100'},
   },
-  plugins: [esbuildPlugin({ts: true})]
+  plugins: [esbuildPlugin({ts: true})],
 }

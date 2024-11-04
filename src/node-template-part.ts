@@ -2,7 +2,10 @@ import {TemplatePart} from './types.js'
 
 const parts = new WeakMap<NodeTemplatePart, ChildNode[]>()
 export class NodeTemplatePart implements TemplatePart {
-  constructor(node: ChildNode, public expression: string) {
+  constructor(
+    node: ChildNode,
+    public expression: string,
+  ) {
     parts.set(this, [node])
     node.textContent = ''
   }

@@ -1,6 +1,6 @@
 {
   "name": "@github/template-parts",
-  "version": "0.5.0",
+  "version": "0.5.4",
   "description": "An implementation of the TemplateInstance proposal (https://github.com/w3c/webcomponents/blob/159b1600bab02fe9cd794825440a98537d53b389/proposals/Template-Instantiation.md)",
   "homepage": "https://github.com/w3c/webcomponents/blob/159b1600bab02fe9cd794825440a98537d53b389/proposals/Template-Instantiation.md",
   "bugs": {
@@ -30,13 +30,16 @@
   },
   "prettier": "@github/prettier-config",
   "devDependencies": {
-    "@github/prettier-config": "^0.0.4",
-    "@open-wc/testing": "^3.1.2",
-    "@web/dev-server-esbuild": "^0.3.0",
-    "@web/test-runner": "^0.10.1",
-    "concurrently": "^7.1.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-github": "^4.1.5",
-    "typescript": "^4.3.5"
+    "@github/prettier-config": "^0.0.6",
+    "@open-wc/testing": "^4.0.0",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^22.8.7",
+    "@web/dev-server-esbuild": "^1.0.2",
+    "@web/test-runner": "^0.19.0",
+    "concurrently": "^9.0.1",
+    "eslint": "^8.57.1",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-github": "^5.0.2",
+    "typescript": "^5.6.3"
   }
 }
