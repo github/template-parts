@@ -8,7 +8,11 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   const walker = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null)
   let node
   while ((node = walker.nextNode())) {
-    if (node instanceof Element && node.hasAttributes()) {
+    if (node instanceof HTMLTemplateElement) {
+      for (const part of collectParts(node.content)) {
+        yield part
+      }
+    } else if (node instanceof Element && node.hasAttributes()) {
       for (let i = 0; i < node.attributes.length; i += 1) {
         const attr = node.attributes.item(i)
         if (attr && attr.value.includes('{{')) {
