@@ -36,6 +36,19 @@ describe('template-instance', () => {
 
     expect(root.innerHTML).to.equal('<template><div>Hello world</div></template>')
   })
+  it('applies data to templated DocumentFragment nodes', () => {
+    const template = document.createElement('template')
+    const fragment = Object.assign(document.createElement('template'), {
+      innerHTML: '<div>Hello world</div>',
+    })
+    const originalHTML = `{{x}}`
+    template.innerHTML = originalHTML
+    const instance = new TemplateInstance(template, {x: fragment.content})
+    expect(template.innerHTML).to.equal(originalHTML)
+    const root = document.createElement('div')
+    root.appendChild(instance)
+    expect(root.innerHTML).to.equal(`<div>Hello world</div>`)
+  })
   it('can render into partial text nodes', () => {
     const template = document.createElement('template')
     const originalHTML = `Hello {{x}}!`
