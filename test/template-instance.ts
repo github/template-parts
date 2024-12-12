@@ -1,6 +1,6 @@
 import {expect} from '@open-wc/testing'
 import {TemplateInstance} from '../src/template-instance'
-import type {NodeTemplatePart} from '../src/node-template-part'
+import {NodeTemplatePart} from '../src/node-template-part'
 import {propertyIdentityOrBooleanAttribute, createProcessor} from '../src/processors'
 
 describe('template-instance', () => {
@@ -238,6 +238,25 @@ describe('template-instance', () => {
 
   describe('edge cases', () => {
     describe('NodeTemplatePart', () => {
+      it('replace supports a DocumentFragment Node that is not a ChildNode', () => {
+        const template = Object.assign(document.createElement('template'), {
+          innerHTML: '<div>{{a}}</div>',
+        })
+        const {content} = Object.assign(document.createElement('template'), {
+          innerHTML: 'after',
+        })
+        const instance = new TemplateInstance(
+          template,
+          {a: 'before'},
+          createProcessor(part => {
+            if (part instanceof NodeTemplatePart) part.replace(content)
+          }),
+        )
+        const root = document.createElement('div')
+        root.appendChild(instance)
+        expect(root.innerHTML).to.equal('<div>after</div>')
+      })
+
       it('replaces an empty replace() call with an empty text node', () => {
         const template = document.createElement('template')
         template.innerHTML = `<div>{{a}}</div>`
