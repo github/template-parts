@@ -2,16 +2,16 @@ import type {TemplatePart, TemplateTypeInit} from './types.js'
 import type {TemplateInstance} from './template-instance.js'
 import {AttributeTemplatePart} from './attribute-template-part.js'
 
-type PartProcessor = (part: TemplatePart, value: unknown) => void
+type PartProcessor = (part: TemplatePart, value: unknown, state: unknown) => void
 
 export function createProcessor(processPart: PartProcessor): TemplateTypeInit {
   return {
-    processCallback(_: TemplateInstance, parts: Iterable<TemplatePart>, params: unknown): void {
-      if (typeof params !== 'object' || !params) return
+    processCallback(_: TemplateInstance, parts: Iterable<TemplatePart>, state: unknown): void {
+      if (typeof state !== 'object' || !state) return
       for (const part of parts) {
-        if (part.expression in params) {
-          const value = (params as Record<string, unknown>)[part.expression] ?? ''
-          processPart(part, value)
+        if (part.expression in state) {
+          const value = (state as Record<string, unknown>)[part.expression] ?? ''
+          processPart(part, value, state)
         }
       }
     },

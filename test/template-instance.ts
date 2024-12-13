@@ -1,7 +1,8 @@
 import {expect} from '@open-wc/testing'
 import {TemplateInstance} from '../src/template-instance'
 import {NodeTemplatePart} from '../src/node-template-part'
-import {propertyIdentityOrBooleanAttribute, createProcessor} from '../src/processors'
+import {InnerTemplatePart} from '../src/inner-template-part'
+import {processPropertyIdentity, propertyIdentityOrBooleanAttribute, createProcessor} from '../src/processors'
 
 describe('template-instance', () => {
   it('applies data to templated text nodes', () => {
@@ -352,6 +353,32 @@ describe('template-instance', () => {
         expect(processCallCount).to.equal(1)
         instance.update({a: false})
         expect(processCallCount).to.equal(2)
+      })
+    })
+
+    describe('handling InnerTemplatePart', () => {
+      it('makes outer state available to inner parts', () => {
+        const processor = createProcessor((part, value, state) => {
+          if (part instanceof InnerTemplatePart && part.directive === 'if') {
+            if (typeof state === 'object' && (state as Record<string, unknown>)[part.expression]) {
+              part.replace(new TemplateInstance(part.template, state, processor))
+            } else {
+              part.replace()
+            }
+          } else {
+            processPropertyIdentity(part, value)
+          }
+        })
+        const template = Object.assign(document.createElement('template'), {
+          innerHTML: '{{x}}<template directive="if" expression="y">{{y}}</template>',
+        })
+
+        const root = document.createElement('div')
+        root.appendChild(new TemplateInstance(template, {x: 'x', y: 'y'}, processor))
+        expect(root.innerHTML).to.equal('xy')
+
+        root.replaceChildren(new TemplateInstance(template, {x: 'x', y: false}, processor))
+        expect(root.innerHTML).to.equal('x')
       })
     })
   })

@@ -1,5 +1,6 @@
 import {expect} from '@open-wc/testing'
 import {TemplateInstance} from '../src/template-instance'
+import {InnerTemplatePart} from '../src/inner-template-part'
 import type {TemplateTypeInit} from '../src/types'
 import {createProcessor} from '../src/processors'
 describe('createProcessor', () => {
@@ -28,5 +29,24 @@ describe('createProcessor', () => {
     expect(calls).to.eql(0)
     instance.update({y: 'world'})
     expect(calls).to.eql(0)
+  })
+
+  describe('handling InnerTemplatePart', () => {
+    beforeEach(() => {
+      processor = createProcessor(part => {
+        if (part instanceof InnerTemplatePart) calls += 1
+      })
+    })
+
+    it('detects InnerTemplatePart instances with <template> element', () => {
+      template.innerHTML = '<template directive="if" expression="x">{{x}}</template>'
+      new TemplateInstance(template, {x: true}, processor)
+      expect(calls).to.eql(1)
+    })
+
+    it('does not detect InnerTemplatePart instances without <template> element', () => {
+      new TemplateInstance(template, {x: true}, processor)
+      expect(calls).to.eql(0)
+    })
   })
 })

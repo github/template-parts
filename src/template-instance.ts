@@ -1,5 +1,6 @@
 import {parse} from './template-string-parser.js'
 import {AttributeValueSetter, AttributeTemplatePart} from './attribute-template-part.js'
+import {InnerTemplatePart} from './inner-template-part.js'
 import {NodeTemplatePart} from './node-template-part.js'
 import {propertyIdentity} from './processors.js'
 import {TemplatePart, TemplateTypeInit} from './types.js'
@@ -9,8 +10,12 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   let node
   while ((node = walker.nextNode())) {
     if (node instanceof HTMLTemplateElement) {
-      for (const part of collectParts(node.content)) {
-        yield part
+      if (node.hasAttribute('directive')) {
+        yield new InnerTemplatePart(node)
+      } else {
+        for (const part of collectParts(node.content)) {
+          yield part
+        }
       }
     } else if (node instanceof Element && node.hasAttributes()) {
       for (let i = 0; i < node.attributes.length; i += 1) {
