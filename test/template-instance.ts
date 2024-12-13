@@ -388,7 +388,7 @@ describe('template-instance', () => {
               part.replace()
             }
           } else {
-            processPropertyIdentity(part, value, state)
+            processPropertyIdentity(part, value)
           }
         })
         const template = Object.assign(document.createElement('template'), {
@@ -403,12 +403,12 @@ describe('template-instance', () => {
         expect(root.innerHTML).to.equal('x')
       })
 
-      it('makes outer state available to InnerTemplatePart elements without attributes', () => {
+      it('makes outer state available to InnerTemplatePart elements without attributes with default propertyIdentity processing', () => {
         let callCount = 0
-        const processor = createProcessor((part, value, state) => {
+        const processor = createProcessor((part, value) => {
           if (part instanceof InnerTemplatePart && value === part.expression) {
             callCount += 1
-            processPropertyIdentity(part, value, state)
+            processPropertyIdentity(part, value)
           }
         })
         const template = Object.assign(document.createElement('template'), {
