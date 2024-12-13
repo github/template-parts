@@ -388,7 +388,7 @@ describe('template-instance', () => {
               part.replace()
             }
           } else {
-            processPropertyIdentity(part, value)
+            processPropertyIdentity(part, value, state)
           }
         })
         const template = Object.assign(document.createElement('template'), {
@@ -401,6 +401,24 @@ describe('template-instance', () => {
 
         root.replaceChildren(new TemplateInstance(template, {x: 'x', y: false}, processor))
         expect(root.innerHTML).to.equal('x')
+      })
+
+      it('makes outer state available to InnerTemplatePart elements without attributes', () => {
+        let callCount = 0
+        const processor = createProcessor((part, value, state) => {
+          if (part instanceof InnerTemplatePart && value === part.expression) {
+            callCount += 1
+            processPropertyIdentity(part, value, state)
+          }
+        })
+        const template = Object.assign(document.createElement('template'), {
+          innerHTML: '<template>{{x}}</template>',
+        })
+
+        const root = document.createElement('div')
+        root.appendChild(new TemplateInstance(template, {x: 'Hello world'}, processor))
+        expect(callCount).to.equal(1)
+        expect(root.innerHTML).to.equal('<template>Hello world</template>')
       })
     })
   })

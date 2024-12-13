@@ -10,13 +10,7 @@ function* collectParts(el: DocumentFragment): Generator<TemplatePart> {
   let node
   while ((node = walker.nextNode())) {
     if (node instanceof HTMLTemplateElement) {
-      if (node.hasAttribute('directive')) {
-        yield new InnerTemplatePart(node)
-      } else {
-        for (const part of collectParts(node.content)) {
-          yield part
-        }
-      }
+      yield new InnerTemplatePart(node)
     } else if (node instanceof Element && node.hasAttributes()) {
       for (let i = 0; i < node.attributes.length; i += 1) {
         const attr = node.attributes.item(i)
