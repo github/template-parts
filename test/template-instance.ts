@@ -1,8 +1,12 @@
 import {expect} from '@open-wc/testing'
-import {TemplateInstance} from '../src/template-instance'
-import {NodeTemplatePart} from '../src/node-template-part'
-import {InnerTemplatePart} from '../src/inner-template-part'
-import {processPropertyIdentity, propertyIdentityOrBooleanAttribute, createProcessor} from '../src/processors'
+import {
+  TemplateInstance,
+  NodeTemplatePart,
+  InnerTemplatePart,
+  processPropertyIdentity,
+  propertyIdentityOrBooleanAttribute,
+  createProcessor,
+} from '../src/index'
 
 describe('template-instance', () => {
   it('applies data to templated text nodes', () => {
