@@ -402,6 +402,24 @@ describe('template-instance', () => {
         root.replaceChildren(new TemplateInstance(template, {x: 'x', y: false}, processor))
         expect(root.innerHTML).to.equal('x')
       })
+
+      it('makes outer state available to InnerTemplatePart elements without attributes with default propertyIdentity processing', () => {
+        let callCount = 0
+        const processor = createProcessor((part, value) => {
+          if (part instanceof InnerTemplatePart && value === part.expression) {
+            callCount += 1
+            processPropertyIdentity(part, value)
+          }
+        })
+        const template = Object.assign(document.createElement('template'), {
+          innerHTML: '<template>{{x}}</template>',
+        })
+
+        const root = document.createElement('div')
+        root.appendChild(new TemplateInstance(template, {x: 'Hello world'}, processor))
+        expect(callCount).to.equal(1)
+        expect(root.innerHTML).to.equal('<template>Hello world</template>')
+      })
     })
   })
 })
