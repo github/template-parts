@@ -32,14 +32,32 @@ describe('template-instance', () => {
     root.appendChild(instance)
     expect(root.innerHTML).to.equal(`<div>Hello world</div>`)
   })
-  it('applies data to nested templated element nodes', () => {
+  it('applies data to nested templated element nodes with the default processPropertyIdentity', () => {
     const root = document.createElement('div')
     const template = Object.assign(document.createElement('template'), {
       innerHTML: '<template><div>{{x}}</div></template>',
     })
-    root.appendChild(new TemplateInstance(template, {x: 'Hello world'}))
+    const instance = new TemplateInstance(template, {x: 'Hello world'})
 
+    root.appendChild(instance)
     expect(root.innerHTML).to.equal('<template><div>Hello world</div></template>')
+    expect(template.innerHTML).to.equal('<template><div>{{x}}</div></template>')
+    instance.update({x: 'Goodbye world'})
+    expect(root.innerHTML).to.equal('<template><div>Goodbye world</div></template>')
+    expect(template.innerHTML).to.equal('<template><div>{{x}}</div></template>')
+  })
+  it('applies data to nested templated element nodes with propertyIdentityOrBooleanAttribute', () => {
+    const template = Object.assign(document.createElement('template'), {
+      innerHTML: '<template><div hidden="{{hidden}}"></div></template>',
+    })
+    const instance = new TemplateInstance(template, {hidden: true}, propertyIdentityOrBooleanAttribute)
+
+    const root = document.createElement('div')
+    root.appendChild(instance)
+    expect(root.innerHTML).to.equal('<template><div hidden=""></div></template>')
+    expect(template.innerHTML).to.equal('<template><div hidden="{{hidden}}"></div></template>')
+    instance.update({hidden: false})
+    expect(root.innerHTML).to.equal('<template><div></div></template>')
   })
   it('applies data to templated DocumentFragment nodes', () => {
     const template = document.createElement('template')
@@ -361,7 +379,7 @@ describe('template-instance', () => {
     })
 
     describe('handling InnerTemplatePart', () => {
-      it('makes outer state available to inner parts', () => {
+      it('makes outer state available to InnerTemplatePart elements with [directive]', () => {
         const processor = createProcessor((part, value, state) => {
           if (part instanceof InnerTemplatePart && part.directive === 'if') {
             if (typeof state === 'object' && (state as Record<string, unknown>)[part.expression]) {
